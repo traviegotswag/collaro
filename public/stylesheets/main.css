@@ -1,0 +1,221 @@
+body {
+		height: 200px;
+		font-family: 'Italianno', cursive;
+		background-image: url('images/background.jpg');
+		background-size: cover;
+		background-repeat: no-repeat;
+}
+
+.header1 {
+		font-size: 70px;
+		color: rgb(105, 105, 105);
+		text-align: left;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		margin-left: 30px;
+}
+
+.check {
+		font-family: 'Lora', serif;
+		font-size: 30px;
+		color: white;
+		float: right;
+		text-align: center;
+		width: 150px;
+		margin: 40px;
+}
+
+.turnsLeft {
+		font-size: 35px;
+		float: right;
+		margin: 40px 0 0 0;
+}
+
+.header2 {
+		font-size: 80px;
+		color: rgb(197, 179, 88, 0.7);
+}
+
+.col-7 {
+		background-color: rgb(224, 224, 224, 0.2);
+		font-size: 72px;
+		height: 340px;
+}
+
+.col-5 {
+		background-image: url('images/rome.jpg');
+		background-size: cover;
+		height: 340px;
+		width: 250px;
+		background-repeat: no-repeat;
+		font-size: 72px;
+		border: 1px solid rgb(105, 105, 105, 0.4);
+}
+
+.question {
+		font-size: 48px;
+		line-height: 60px;
+		text-align: center;
+		padding: 50 30 50 30;
+		margin-top: 20px;
+}
+
+.answer {
+		font-size: 48px;
+		text-align: center;
+		margin-top: 20px;
+}
+
+.landmarks {
+		font-size: 42px;
+		color: rgb(128, 128, 128);
+		text-align: right;
+		margin: 5px 5px 0 0;
+}
+
+.questionDisplayed {
+		font-family: 'Lora', serif;
+		font-size: 30px;
+		color: rgb(128, 128, 128, 0.8);
+		line-height: 40px;
+		text-align: center;
+		padding: 0 30px;
+}
+
+.true {
+		font-family: 'Lora', serif;
+		font-size: 20px;
+		background-color: rgb(154, 205, 50, 0.5);
+		border: none;
+		border-spacing: 10px;
+		padding: 12px;
+		margin-right: 20px;
+}
+
+.false {
+		font-family: 'Lora', serif;
+		font-size: 20px;
+		background-color: rgb(240, 128, 128, 0.5);
+		border: none;
+		border-spacing: 10px;
+		padding: 12px;
+}
+
+button {
+		width: 120px;
+}
+
+.landmarksHeader {
+		font-size: 30px;
+		text-align: right;
+		margin: 0 5px 0 0;
+}
+
+.monuments {
+		font-family: 'Lora', serif;
+		font-size: 15px;
+		padding: 0px;
+		margin: 0px;
+		border: 0px;
+}
+
+.monumentsList {
+		max-height: 25px;
+		margin: 0px;
+		border: 0px;
+		padding: 0px;
+		text-align: right;
+		list-style-position: inside;
+}
+
+.landmarksOfRome {
+		font-size: 20px;
+}
+
+#castel {
+		height: 50px;
+}
+
+#stpeters {
+		height: 50px;
+		margin-right: 10px;
+		padding-bottom: 10px;
+}
+
+#trevi {
+		height: 40px;
+		margin-bottom: 10px;
+}
+
+#pantheon {
+		height: 40px;
+}
+
+#colo {
+		height: 60px;
+		margin-bottom: 10px;
+}
+
+#visgoth {
+		height: 60px;
+		margin: 0 0 0 10px;
+}
+
+#smoke1 {
+		height: 100px;
+}
+
+#smoke2 {
+		height: 100px;
+}
+
+#smoke3 {
+		height: 100px;
+}
+
+#smoke4 {
+		height: 100px;
+}
+
+#smoke5 {
+		height: 100px;
+}
+
+.overlay {
+		position: relative;
+}
+
+.overlay #smoke1 {
+		position: absolute;
+		bottom: -2px;
+		right: 10px;
+		z-index: 1;
+}
+
+.overlay #smoke2 {
+		position: absolute;
+		bottom: -4px;
+		right: 6px;
+		z-index: 1;
+}
+
+.overlay #smoke3 {
+		position: absolute;
+		bottom: -10px;
+		right: 10px;
+		z-index: 1;
+}
+
+.overlay #smoke4 {
+		position: absolute;
+		bottom: 10px;
+		right: 15px;
+		z-index: 1;
+}
+
+.overlay #smoke5 {
+		position: absolute;
+		bottom: -2px;
+		right: 5px;
+		z-index: 1;
+}
