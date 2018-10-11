@@ -18,29 +18,23 @@ module.exports = (dbPool) => {
         return sha256(item + salt);
     };
 
-
     const create = (user, callback) => {
-      // run user input password through bcrypt to obtain hashed password
-
-      var hashedValue = encrypt(user.password);
-
+      var hashedPassword = encrypt(user.password);
       // set up query
-      const queryString = 'INSERT INTO users (username, password) VALUES ($1, $2)';
-      const values = [user.username,hashedValue];
+      const queryString = 'INSERT INTO users (email, username, password) VALUES ($1, $2, $3) RETURNING id';
+      const values = [user.email,user.username,hashedPassword];
 
       // execute query
       dbPool.query(queryString, values, (error, queryResult) => {
-        // invoke callback function with results after query has executed
         callback(error, queryResult);
       });
     };
-
 
     const login = (user, callback) => {
 
       // set up query
       const queryString = 'SELECT * FROM users WHERE username = ($1)';
-      const values = [user.name];
+      const values = [user.username];
       // execute query
       dbPool.query(queryString, values, (error, queryResult) => {
         // invoke callback function with results after query has executed
@@ -48,21 +42,40 @@ module.exports = (dbPool) => {
       });
     };
 
-    const questionnaire = (user, callback) => {
+//BACKUP
+    // const questionnaire = (user, userId, userName, callback) => {
+    //   // set up query
+    //   const queryString = 'INSERT INTO questions (existingsize, height, weight, belly, fit, collar, front, cuff, customersize, user_id, username) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING customersize';
+    //   //FIGURE OUT HOW TO GET USER ID---------------------------------------------------------------
+    //   const values = [
+    //                     user.existingsize,
+    //                     user.height,
+    //                     user.weight,
+    //                     user.belly,
+    //                     user.fit,
+    //                     user.collar,
+    //                     user.front,
+    //                     user.cuff,
+    //                     user.customersize,
+    //                     userId,
+    //                     userName
+    //                     ];
+
+    //   dbPool.query(queryString, values, (error, queryResult) => {
+    //     // console.log(queryResult);
+    //     // invoke callback function with results after query has executed
+    //     callback(error, queryResult);
+    //   });
+    // };
+
+
+    const userhome = (user, userId, callback) => {
       // set up query
-      const queryString = 'INSERT INTO users (size, height, weight, belly, fit, collar, front, cuff, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) WHERE username = ($11)';
+      const queryString = 'SELECT existingsize, height, weight, belly, fit, collar, front, cuff, customersize FROM questions WHERE user_id = ($1) '
       const values = [
-                        user.size,
-                        user.height,
-                        user.weight,
-                        user.belly,
-                        user,fit,
-                        user.collar,
-                        user.front,
-                        user.cuff,
-                        user.user_id
+                        userId
                         ];
-      // execute query
+
       dbPool.query(queryString, values, (error, queryResult) => {
         // invoke callback function with results after query has executed
         callback(error, queryResult);
@@ -73,14 +86,47 @@ module.exports = (dbPool) => {
         encrypt,
         create,
         login,
-        // logout
-        questionnaire
+        questionnaire,
+        userhome
+        // logout [WIP] - NEED TO INSERT BUTTON IN HOME PAGE AND OTHER PAGES?
     };
 };
 
 
 
+    const userhome = (user, userId, callback) => {
+      // set up query
+      const queryString = 'SELECT existingsize, height, weight, belly, fit, collar, front, cuff, customersize FROM questions WHERE user_id = ($1) '
+      const values = [
+                        userId
+                        ];
 
+      dbPool.query(queryString, values, (error, queryResult) => {
+      const queryString = 'INSERT INTO questions (existingsize, height, weight, belly, fit, collar, front, cuff, customersize, user_id, username) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING customersize';
+      //FIGURE OUT HOW TO GET USER ID---------------------------------------------------------------
+      const values = [
+                        user.existingsize,
+                        user.height,
+                        user.weight,
+                        user.belly,
+                        user.fit,
+                        user.collar,
+                        user.front,
+                        user.cuff,
+                        user.customersize,
+                        userId,
+                        userName
+                        ];
 
+      dbPool.query(queryString, values, (error, queryResult1) => {
+        // console.log(queryResult);
+        // invoke callback function with results after query has executed
+        callback(error, queryResult, queryResult1);
+      });
+        // console.log("USER INFO IS: ",queryResult);
+        // invoke callback function with results after query has executed
+        //callback(error, queryResult);
+      });
+    };
 
 

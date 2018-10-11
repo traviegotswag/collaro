@@ -19,17 +19,18 @@ module.exports = (app, db) => { //references db from index.js
 
 
 // CRUD users
-app.get('/users/new', users.newForm);
+app.get('/users/new/', users.signup);
 app.get('/users/login/', users.loginForm);
 app.get('/users/questionnaire/', users.questionnaireForm);
+app.get('/users/', users.userhome);
 // app.get('/users/logout', users.logout);
 
-app.post('/users', users.create);
+app.post('/users/new', users.create);
 app.post('/users/login', users.login);
+app.post('/users/logout', users.logout);
 app.post('/users/questionnaire', users.questionnaire);
 
 // app.post('/users/questionnaire', users.questionnaire);
-
 
 };
 

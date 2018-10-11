@@ -10,7 +10,6 @@ class NewUser extends React.Component {
 
         <head />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
           <link
             href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
             rel="stylesheet"
@@ -27,10 +26,14 @@ class NewUser extends React.Component {
             </div>
 
             <div className="user-attribute">
-              Username: <input name="username" type="text" />
+              Email: <input name="email" type="email" required/>
+            </div>
+
+            <div className="user-attribute">
+              Username: <input name="username" type="text" required/>
             </div>
             <div className="user-attribute">
-              Password: <input name="password" type="text" />
+              Password: <input name="password" type="text" required/>
             </div>
             <input name="submit" type="submit"/>
 

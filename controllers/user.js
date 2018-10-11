@@ -1,3 +1,4 @@
+//WHEN YOU POST INFO, IT COMES TO THE CONTROLLER, SO ANY REQUEST EG. REQ.BODY SHOULD BE DONE HERE
 
 module.exports = (db) => {
 
@@ -6,37 +7,36 @@ module.exports = (db) => {
    * Controller logic
    * ===========================================
    */
-  const newForm = (request, response) => {
+  const signup = (request, response) => {
     response.render('user/NewUser');
   };
 
   const create = (request, response) => {
       // use user model method `create` to create new user entry in db
       //REQUEST.BODY RETURNS AN OBJECT
-      db.user.create(request.body, (error, queryResult) => {
-        // queryResult of creation is not useful to us, so we ignore it
-        // (console log it to see for yourself)
-        // (you can choose to omit it completely from the function parameters)
+        const username = request.body.username;
+        const enteredPassword = request.body.password;
+        const hashedPassword = db.user.encrypt(enteredPassword);
 
-        if (error) {
-          console.error('error getting user:', error);
-          response.sendStatus(500);
-        }
-
-        if (queryResult.rowCount >= 1) {
-          console.log('User created successfully');
-
-          // drop cookies to indicate user's logged in status and username
-          response.cookie('loggedIn', true);
-          response.cookie('username', db.user.encrypt(request.body.id));
-        } else {
-          console.log('User could not be created');
-        }
-
-        // redirect to home page after creation
-        response.redirect('/users/questionnaire');
-      });
-  };
+        db.user.create(request.body, (error, queryResult) => {
+            if (error) {
+                console.error('error getting user:', error);
+                response.sendStatus(500);
+            } else if (queryResult.rowCount >= 1) {
+                console.log('User created successfully');
+                // alert("Welcome to Collaro, your account has been created.");
+                var userId = queryResult.rows[0].id;
+                // console.log(userId);
+                response.cookie('loggedIn', true);
+                response.cookie('username', username);
+                response.cookie('password', hashedPassword);
+                response.cookie('userid', userId);
+                response.redirect('/users/questionnaire');
+                // FIND OUT HOW TO RETRIEVE USERID
+                // response.redirect('/users/login');
+            }
+        })
+    }
 
 
   const loginForm = (request, response) => {
@@ -46,27 +46,41 @@ module.exports = (db) => {
 
   const login = (request,response) => {
         db.user.login(request.body, (error, queryResult) => {
+
             if (error) {
               console.error('error logging in:', error);
               response.sendStatus(500);
             } else if (queryResult.rowCount >= 1) {
-                const dbId = queryResult.rows[0].id;
-                const dbUsername = queryResult.rows[0].name;
-                const dbHashedPassword = queryResult.rows[0].password;
-                const enteredPassword = db.user.encrypt(request.body.password);
-
-                if (dbHashedPassword === enteredPassword) {
-                    response.cookie('loggedIn', true);
-                    response.cookie('username', dbId );
-                    response.send(`${dbUsername} is logged in`);
-                    // response.render('user/home'); TBC - START WHEN BASIC ARCHITECTURE IS UP
-                } else {
-                    console.log('Login details are incorrect');
-                }
-            } else
-          // console.log("Incorrect details, login again!")
-          response.redirect('/users/login')
+                    const dbId = queryResult.rows[0].id;
+                    const dbUsername = queryResult.rows[0].username;
+                    const dbHashedPassword = queryResult.rows[0].password;
+                    const enteredUsername = request.body.username;
+                    const hashedEnteredPassword = db.user.encrypt(request.body.password);
+                    if (enteredUsername === dbUsername && hashedEnteredPassword === dbHashedPassword) {
+                        response.cookie('loggedIn', true);
+                        response.cookie('userid', dbId);
+                        response.cookie('username', dbUsername);
+                        response.redirect('/users/');
+                        // response.redirect('/users/questionnaire');
+                        //CHECK HOW TO IMPLEMENT THIS IF AUTO LOGOUT AFTER USER ACCOUNT IS CREATED
+                        // if () {
+                        //     response.send(`${dbUsername} is logged in`);
+                        //     // response.render('user/home'); TBC - START WHEN BASIC ARCHITECTURE IS UP------------------------------------
+                        // } else {
+                        // }
+                    } else {
+                        console.log('Login details are incorrect');
+                        response.redirect('/users/login');
+                    }
+            }
         })
+    }
+
+    const logout = (request, response) => {
+        response.clearCookie('loggedIn');
+        response.clearCookie('userid');
+        response.clearCookie('username');
+        response.redirect('user/login');
     };
 
     const questionnaireForm = (request, response) => {
@@ -74,29 +88,38 @@ module.exports = (db) => {
     };
 
     const questionnaire = (request,response) => {
-        // db.user.login(request.body, (error, queryResult) => {
-          //   if (error) {
-          //     console.error('error logging in:', error);
-          //     response.sendStatus(500);
-          //   } else if (queryResult.rowCount >= 1) {
-          //       const dbId = queryResult.rows[0].id;
-          //       const dbUsername = queryResult.rows[0].name;
-          //       const dbHashedPassword = queryResult.rows[0].password;
-          //       const enteredPassword = db.user.encrypt(request.body.password);
+        //DO A QUERY TO INSERT INFO INTO DATABASE
+        var userId = request.cookies['userid'];
+        var userName = request.cookies['username'];
+        db.user.questionnaire(request.body, userId, userName, (error, queryResult) => {
+            if (error) {
+                console.error('error inserting new measurements of customer', error);
+                response.sendStatus(500);
+            } else if (queryResult.rowCount >= 1) {
+                // response.redirect('/user/');
+                const customersize = queryResult.rows[0].customersize;
+                if (customersize == "Algorithm-generated smart size") {
+                    response.redirect('/users/');
+                } else if (customersize == "Be physically measured in person") {
+                    response.send("We will email you to arrange a time for you to be measured.");
+                    //DECIDE IF SHOULD INCLUDE A SCHEDULING PAGE
+                }
+            }
+        });
+    }
 
-          //       if (dbHashedPassword === enteredPassword) {
-          //           response.cookie('loggedIn', true);
-          //           response.cookie('username', dbId );
-          //           response.send(`${dbUsername} is logged in`);
-          //           // response.render('user/home'); TBC - START WHEN BASIC ARCHITECTURE IS UP
-          //       } else {
-          //           console.log('Login details are incorrect');
-          //       }
-          //   } else
-          // console.log("Incorrect details, login again!")
-        //   response.redirect('/users/')
-        // })
-    };
+    const userhome = (request,response) => {
+        var userId = request.cookies['userid'];
+        db.user.userhome(request.body, userId, (error, queryResult) => {
+            if (error) {
+                console.error('error displaying user home page', error);
+                response.sendStatus(500);
+            } else if (queryResult.rowCount >= 1) {
+                var userInfo = queryResult.rows;
+                response.render('user/home', {questions: userInfo});
+            }
+        });
+    }
 
 
   /**
@@ -105,10 +128,28 @@ module.exports = (db) => {
    * ===========================================
    */
   return {
-    newForm,
+    signup,
     create,
-    questionnaireForm,
     loginForm,
     login,
+    questionnaireForm,
+    questionnaire,
+    logout,
+    userhome
   };
-};
+
+}
+
+Nested query
+    const userhome = (request,response) => {
+        var userId = request.cookies['userid'];
+        db.user.userhome(request.body, userId, (error, queryResult) => {
+            if (error) {
+                console.error('error displaying user home page', error);
+                response.sendStatus(500);
+            } else if (queryResult.rowCount >= 1) {
+                var userInfo = queryResult.rows;
+                response.render('user/home', {questions: userInfo, fff:"lll"});
+            }
+        });
+    }

@@ -37,11 +37,15 @@ app.engine('jsx', reactEngine);
 // Import routes to match incoming requests
 require('./routes')(app, db); //APP being express, DB REFERS TO DB FILE
 
-//USE THE QUERYRESULT
 
 // Root GET request (it doesn't belong in any controller file)
 app.get('/', (request, response) => {
-  response.render('home');
+    let userCookies = request.cookies['loggedIn'];
+    if (userCookies) {
+        response.redirect('user/');
+    } else {
+        response.render('home');
+    }
 });
 
 

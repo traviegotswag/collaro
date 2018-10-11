@@ -26,7 +26,7 @@ if( process.env.DATABASE_URL ){
   configs = {
     user: 'admin',
     host: '127.0.0.1',
-    database: 'tweedr',
+    database: 'collaro',
     port: 5432
   };
 }

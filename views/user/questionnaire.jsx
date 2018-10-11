@@ -1,64 +1,84 @@
 var React = require("react");
 
-class Login extends React.Component {
+class questionnaire extends React.Component {
   render() {
 
     return (
       <html>
         <head />
           <body>
-            <form className="user-form" method="POST" action="/users/login">
+            <form className="user-form" method="POST" action="/users/questionnaire">
 
-              <div className="questions">
-                What size of shirts do you usually wear?
-                <select className="shirt-size">
-                  <option value="xs">XS</option>
-                  <option value="s" selected>S</option>
-                  <option value="m" >M</option>
-                  <option value="l" >L</option>
-                  <option value="xl" >XL</option>
-                  <option value="xxl" >XXL</option>
+            <h4>For us to recommend you the right style and size of your custom shirt, simply answer 10 simple questions below. </h4>
+              <div className="questions" required>
+                What size of Uniqlo shirts do you usually wear?
+                <select className="shirt-size" name="existingsize">
+                  <option value="XS">XS</option>
+                  <option value="S" selected>S</option>
+                  <option value="M" >M</option>
+                  <option value="L" >L</option>
+                  <option value="XL" >XL</option>
                 </select>
-              </div>
+              </div><br/>
 
               <div className="questions">
-                What is your height in metres?<input name="height" type="text" />
-              </div>
+                What is your height in metres (exclude units)?<input name="height" type="text" required/>
+              </div><br/>
 
               <div className="questions">
-                What is your weight in kilograms?<input name="weight" type="text" />
-              </div>
+                What is your weight in kilograms? (exclude units)<input name="weight" type="text" required/>
+              </div><br/>
 
-              <div className="questions">
+              <div className="questions" required>
                 What best describes your mid-section?
-                <select className="mid-section">
-                  <option value="no belly" selected>No Belly</option>
-                  <option value="small belly">Slight Belly</option>
-                  <option value="medium belly" ></option>
-                  <option value="big belly" >Loose</option>
+                <select className="belly" name="belly">
+                  <option value="No belly" selected>No Belly</option>
+                  <option value="Small belly">Slight Belly</option>
+                  <option value="Medium belly" >Medium Belly</option>
+                  <option value="Big belly" >Loose</option>
                 </select>
-              </div>
+              </div><br/>
 
-              <div className="questions">
-              Do you like your shirts to fit slim, normal or loose?
-                <select className="shirt-fit">
-                  <option value="slim">Slim</option>
-                  <option value="normal" selected>Normal</option>
-                  <option value="loose" >Loose</option>
+              <div className="questions" required>
+              Do you like your shirts to fit slim or relaxed?
+                <select className="shirt-fit" name="fit">
+                  <option value="Slim">Slim</option>
+                  <option value="Relaxed" selected>Relaxed</option>
                 </select>
-              </div>
+              </div><br/>
 
-              <div className="questions">
-                What collar do you like best on your shirts?<input name="name" type="text" />
-              </div>
+              <div className="questions" required>
+                What collar do you like best on your shirts?
+                <select className="shirt-collar" name="collar">
+                  <option value="Classic" selected>Classic</option>
+                  <option value="Buttondown">Buttondown</option>
+                  <option value="Spread" >Spread</option>
+                </select>
+              </div><br/>
 
-              <div className="questions">
-                What cuff do you like best on your shirts?<input name="name" type="text" />
-              </div>
-
-              <div className="questions">
+              <div className="questions" required>
                 What front do you like best on your shirts?
-              </div>
+                <select className="shirt-front" name="front">
+                  <option value="Clean" selected>Clean</option>
+                  <option value="Placket">Placket</option>
+                  <option value="Concealed" >Concealed</option>
+                </select>
+              </div><br/>
+
+            <div className="questions" required>
+                What cuff do you like best on your shirts?
+                <select className="shirt-cuff" name="cuff">
+                  <option value="Rounded" selected>Barrel</option>
+                  <option value="Angled">Angled</option>
+                  <option value="French" >French</option>
+                </select>
+            </div><br/>
+
+            <div className="questions" required>
+                How do you want your shirt size to be generated?<br/>
+                    <input type="radio" name="customersize" value="Algorithm-generated smart size" selected /> Algorithm-generated smart size<br/>
+                    <input type="radio" name="customersize" value="Be physically measured in person"/> Be physically measured in person
+            </div><br/>
 
               <input name="submit" type="submit"/>
 
@@ -69,6 +89,6 @@ class Login extends React.Component {
   }
 }
 
-module.exports = Login;
+module.exports = questionnaire;
 
 
