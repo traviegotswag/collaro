@@ -9,13 +9,6 @@ class NewUser extends React.Component {
       <html>
 
         <head />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <link
-            href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-            crossOrigin="anonymous"
-          />
           <title>Login to Collaro</title>
 
         <body>

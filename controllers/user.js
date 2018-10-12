@@ -29,11 +29,8 @@ module.exports = (db) => {
                 // console.log(userId);
                 response.cookie('loggedIn', true);
                 response.cookie('username', username);
-                response.cookie('password', hashedPassword);
                 response.cookie('userid', userId);
                 response.redirect('/users/questionnaire');
-                // FIND OUT HOW TO RETRIEVE USERID
-                // response.redirect('/users/login');
             }
         })
     }
@@ -60,14 +57,7 @@ module.exports = (db) => {
                         response.cookie('loggedIn', true);
                         response.cookie('userid', dbId);
                         response.cookie('username', dbUsername);
-                        response.redirect('/users/');
-                        // response.redirect('/users/questionnaire');
-                        //CHECK HOW TO IMPLEMENT THIS IF AUTO LOGOUT AFTER USER ACCOUNT IS CREATED
-                        // if () {
-                        //     response.send(`${dbUsername} is logged in`);
-                        //     // response.render('user/home'); TBC - START WHEN BASIC ARCHITECTURE IS UP------------------------------------
-                        // } else {
-                        // }
+                        response.redirect('/users/' + enteredUsername);
                     } else {
                         console.log('Login details are incorrect');
                         response.redirect('/users/login');
@@ -76,50 +66,135 @@ module.exports = (db) => {
         })
     }
 
-    const logout = (request, response) => {
-        response.clearCookie('loggedIn');
-        response.clearCookie('userid');
-        response.clearCookie('username');
-        response.redirect('user/login');
-    };
+//--------------------------------------------------------
 
     const questionnaireForm = (request, response) => {
         response.render('user/questionnaire');
     };
 
     const questionnaire = (request,response) => {
-        //DO A QUERY TO INSERT INFO INTO DATABASE
+        //Query to insert info into database
         var userId = request.cookies['userid'];
         var userName = request.cookies['username'];
+
         db.user.questionnaire(request.body, userId, userName, (error, queryResult) => {
             if (error) {
                 console.error('error inserting new measurements of customer', error);
                 response.sendStatus(500);
             } else if (queryResult.rowCount >= 1) {
-                // response.redirect('/user/');
-                const customersize = queryResult.rows[0].customersize;
-                if (customersize == "Algorithm-generated smart size") {
-                    response.redirect('/users/');
-                } else if (customersize == "Be physically measured in person") {
-                    response.send("We will email you to arrange a time for you to be measured.");
-                    //DECIDE IF SHOULD INCLUDE A SCHEDULING PAGE
-                }
+                // var customerFit = queryResult.rows[0].fit;
+                // var customerExistingSize = queryResult.rows[0].existingsize;
+                response.redirect('/users/' + userName);
             }
         });
     }
 
-    const userhome = (request,response) => {
+// ----------------------------------------------------------------
+
+    // Nested query to display user's home page
+    const userhome = (request, response) => {
         var userId = request.cookies['userid'];
-        db.user.userhome(request.body, userId, (error, queryResult) => {
-            if (error) {
-                console.error('error displaying user home page', error);
+
+        db.user.userhome(request.body, userId, (error1, error2, error3, questionsQueryResult, smartSizeQueryResult, insertSizeQueryResult) => {
+            if (error1) {
+                console.error('error1: ', error1);
                 response.sendStatus(500);
-            } else if (queryResult.rowCount >= 1) {
-                var userInfo = queryResult.rows;
-                response.render('user/home', {questions: userInfo});
-            }
+            } else if (error2) {
+                console.error('error2: ', error2);
+                response.sendStatus(500);
+            } else if (error3) {
+                console.error('error3: ', error3);
+                response.sendStatus(500);
+            } else if (questionsQueryResult.rowCount >= 1) {
+                var userProfile = questionsQueryResult.rows;
+                var userMeasurements = smartSizeQueryResult.rows;
+
+                // console.log("userProfile: ", userProfile);
+                // console.log("userMeasurements: ", userMeasurements);
+                response.render('user/home', { questions: userProfile, measurements: userMeasurements });
+            };
         });
-    }
+    };
+
+    //BACKUP
+
+    // // Nested query to display user's home page
+    // const userhome = (request, response) => {
+    //     var userId = request.cookies['userid'];
+
+    //     db.user.userhome(request.body, userId, (error1, error2, questionsQueryResult, smartSizeQueryResult) => {
+    //         if (error1) {
+    //             console.error('error1: ', error1);
+    //             response.sendStatus(500);
+    //         } else if (error2) {
+    //             console.error('error2: ', error2);
+    //             response.sendStatus(500);
+    //         } else if (questionsQueryResult.rowCount >= 1) {
+    //             var userProfile = questionsQueryResult.rows;
+    //             var userMeasurements = smartSizeQueryResult.rows;
+    //             // console.log("userProfile: ", userProfile);
+    //             // console.log("userMeasurements: ", userMeasurements);
+    //             response.render('user/home', { questions: userProfile, measurements: userMeasurements });
+    //         };
+    //     });
+    // };
+
+    // const editMeasurements = (request, response) => {
+    //   let id = request.params['id'];
+    //   let pokemon = request.body;
+
+    //   const values = [pokemon.num, pokemon.name, pokemon.img, pokemon.height, pokemon.weight, id];
+    //   console.log(queryString);
+    //   pool.query(queryString, values, (error, queryResult) => {
+    //     if (err) {
+    //       console.error('Query error:', error.stack);
+    //     } else {
+    //       console.log('Query result:', result);
+
+    //       // redirect to home page
+    //       response.redirect('/');
+    //     }
+    //   });
+    // }
+
+    // old nested query code
+    // const userhome = (request,response) => {
+    //     var userId = request.cookies['userid'];
+    //     //NEED TO DEFINE customerFit and customerSize
+    //     db.user.userhome(request.body, userId, customerFit, customerSize, (error1,questionsQueryResult), (error2,smartSizeQueryResult) => {
+    //         if (error) {
+    //             console.error('error displaying user home page', error);
+    //             response.sendStatus(500);
+    //         } else if (questionsQueryResult.rowCount >= 1) {
+    //             var userProfile = questionsQueryResult.rows;
+    //             var userMeasurements = smartSizeQueryResult.rows;
+    //             response.render('user/home', {questions: userProfile, measurements: userMeasurements});
+    //         }
+    //     });
+    // }
+
+// ----------------------------------------------------------------
+
+    // BACKUP
+    // const userhome = (request,response) => {
+    //     var userId = request.cookies['userid'];
+    //     db.user.userhome(request.body, userId, (error, queryResult) => {
+    //         if (error) {
+    //             console.error('error displaying user home page', error);
+    //             response.sendStatus(500);
+    //         } else if (queryResult.rowCount >= 1) {
+    //             var userInfo = queryResult.rows;
+    //             response.render('user/home', {questions: userInfo});
+    //         }
+    //     });
+    // }
+
+    const logout = (request, response) => {
+        response.clearCookie('loggedIn');
+        response.clearCookie('userid');
+        response.clearCookie('username');
+        response.redirect('/users/login/');
+    };
 
 
   /**
@@ -139,17 +214,3 @@ module.exports = (db) => {
   };
 
 }
-
-Nested query
-    const userhome = (request,response) => {
-        var userId = request.cookies['userid'];
-        db.user.userhome(request.body, userId, (error, queryResult) => {
-            if (error) {
-                console.error('error displaying user home page', error);
-                response.sendStatus(500);
-            } else if (queryResult.rowCount >= 1) {
-                var userInfo = queryResult.rows;
-                response.render('user/home', {questions: userInfo, fff:"lll"});
-            }
-        });
-    }

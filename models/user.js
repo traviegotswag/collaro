@@ -30,6 +30,7 @@ module.exports = (dbPool) => {
       });
     };
 
+//------------------------------------------
     const login = (user, callback) => {
 
       // set up query
@@ -42,11 +43,145 @@ module.exports = (dbPool) => {
       });
     };
 
+
+    const questionnaire = (user, userId, userName, callback) => {
+      // set up query
+      const queryString = 'INSERT INTO questions (existingsize, height, weight, belly, fit, collar, front, cuff, customersize, user_id, username) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING customersize, existingsize, fit';
+      //FIGURE OUT HOW TO GET USER ID---------------------------------------------------------------
+      const values = [
+                        user.existingsize,
+                        user.height,
+                        user.weight,
+                        user.belly,
+                        user.fit,
+                        user.collar,
+                        user.front,
+                        user.cuff,
+                        user.customersize,
+                        userId,
+                        userName
+                        ];
+
+      dbPool.query(queryString, values, (error, queryResult) => {
+        // console.log(queryResult);
+        // invoke callback function with results after query has executed
+        callback(error, queryResult);
+      });
+    };
+
+// ----------------------------------------------------
+
+    const userhome = (user, userId, callback) => {
+
+        var queryString1 = 'SELECT existingsize, height, weight, belly, fit, collar, front, cuff, customersize FROM questions WHERE user_id = ($1) '
+        var values1 = [userId];
+
+        dbPool.query(queryString1, values1, (error1, questionsQueryResult) => {
+            //END OF QUERY 1, START OF NESTED QUERY 2
+            var customerExistingSize = questionsQueryResult.rows[0].existingsize;
+            var customerFit = questionsQueryResult.rows[0].fit;
+            var customerCollaroSize = questionsQueryResult.rows[0].customersize;
+
+                if (customerCollaroSize == "Algorithm-generated smart size") {
+                   if (customerFit == "Slim") {
+                        var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM slimsizes WHERE size = ($1)';
+                    } else if (customerFit == "Relaxed") {
+                        var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM relaxedsizes WHERE size = ($1)';
+                    }
+                        var values2 = [customerExistingSize];
+
+                    } else if (customerCollaroSize == "Be physically measured in person") {
+                       if (customerFit == "Slim") {
+                            var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM slimsizes WHERE size = ($1)';
+                        } else if (customerFit == "Relaxed") {
+                            var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM relaxedsizes WHERE size = ($1)';
+                        }
+                        var values2 = ['To be measured'];
+                    }
+
+//-----------IF MEASUREMENTS ALREADY EXISTS, DONT INSERT----------------------
+            dbPool.query(queryString2, values2, (error2, smartSizeQueryResult) => {
+                var queryString3 = 'INSERT INTO measurements (shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)';
+                var values3 = [
+                            smartSizeQueryResult.rows[0].shoulder,
+                            smartSizeQueryResult.rows[0].chest,
+                            smartSizeQueryResult.rows[0].waist,
+                            smartSizeQueryResult.rows[0].hips,
+                            smartSizeQueryResult.rows[0].shirtlength,
+                            smartSizeQueryResult.rows[0].sleevelength,
+                            smartSizeQueryResult.rows[0].elbow,
+                            smartSizeQueryResult.rows[0].leftcuff,
+                            smartSizeQueryResult.rows[0].rightcuff,
+                            smartSizeQueryResult.rows[0].cufflength,
+                            smartSizeQueryResult.rows[0].collar,
+                            userId
+                        ];
+                dbPool.query(queryString3, values3, (error3, insertSizeQueryResult) => {
+
+                    callback(error1, error2, error3, questionsQueryResult, smartSizeQueryResult, insertSizeQueryResult);
+
+                });
+            });
+        });
+    };
+
+
+
+
 //BACKUP
-    // const questionnaire = (user, userId, userName, callback) => {
+    // const userhome = (user, userId, callback) => {
+
+    //     var queryString1 = 'SELECT existingsize, height, weight, belly, fit, collar, front, cuff, customersize FROM questions WHERE user_id = ($1) '
+    //     var values1 = [userId];
+
+    //     dbPool.query(queryString1, values1, (error1, questionsQueryResult) => {
+    //         //END OF QUERY 1, START OF NESTED QUERY 2
+    //         var customerSize = questionsQueryResult.rows[0].existingsize;
+    //         var customerFit = questionsQueryResult.rows[0].fit;
+    //        if (customerFit == "Slim") {
+    //             var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM slimsizes WHERE size = ($1)'
+    //         } else if (customerFit == "Relaxed") {
+    //             var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM relaxedsizes WHERE size = ($1)'
+    //         }
+    //             let values2 = [customerSize];
+
+    //         dbPool.query(queryString2, values2, (error2, smartSizeQueryResult) => {
+
+    //             callback(error1, error2, questionsQueryResult, smartSizeQueryResult);
+
+    //         });
+    //     });
+    // };
+
+// ----------------------------------------------------
+
+    //old nested query code [SEE WHATS WRONG]
+    // const userhome = (user, userId, customerFit, customerSize, callback1, callback2) => {
+    //   var queryString1 = 'SELECT existingsize, height, weight, belly, fit, collar, front, cuff, customersize FROM questions WHERE user_id = ($1) '
+    //   var values1 = [userId];
+
+    //     if (customerFit == "Slim") {
+    //         var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM slimsizes WHERE size = ($1)'
+    //     } else if (customerFit == "Relaxed") {
+    //         var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM relaxedsizes WHERE size = ($1)'
+    //     }
+    //     var values2 = [customerSize];
+
+    //   dbPool.query(queryString1, values1, (error1, questionsQueryResult) => {
+
+    //         dbPool.query(queryString2, values2, (error2, smartSizeQueryResult) => {
+    //         // console.log(queryResult);
+    //         callback1(error1, questionsQueryResult);
+    //         callback2(error2, smartSizeQueryResult);
+    //         });
+    //   });
+    // };
+
+// ----------------------------------------------------
+
+    // const editMeasurements = (user, callback) => {
     //   // set up query
-    //   const queryString = 'INSERT INTO questions (existingsize, height, weight, belly, fit, collar, front, cuff, customersize, user_id, username) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING customersize';
-    //   //FIGURE OUT HOW TO GET USER ID---------------------------------------------------------------
+    //   const queryString = 'UPDATE "measurements" SET "shoulder"=($1), "chest"=($2), "waist"=($3), "hips"=($4), "shirtlength"=($4), "sleevelength"=($5), "elbow"=($6), "leftcuff"=($7), "rightcuff"=($8), "cufflength"=($9), "collar"=($10) WHERE "id"=($11)'
     //   const values = [
     //                     user.existingsize,
     //                     user.height,
@@ -69,18 +204,6 @@ module.exports = (dbPool) => {
     // };
 
 
-    const userhome = (user, userId, callback) => {
-      // set up query
-      const queryString = 'SELECT existingsize, height, weight, belly, fit, collar, front, cuff, customersize FROM questions WHERE user_id = ($1) '
-      const values = [
-                        userId
-                        ];
-
-      dbPool.query(queryString, values, (error, queryResult) => {
-        // invoke callback function with results after query has executed
-        callback(error, queryResult);
-      });
-    };
 
     return {
         encrypt,
@@ -94,39 +217,6 @@ module.exports = (dbPool) => {
 
 
 
-    const userhome = (user, userId, callback) => {
-      // set up query
-      const queryString = 'SELECT existingsize, height, weight, belly, fit, collar, front, cuff, customersize FROM questions WHERE user_id = ($1) '
-      const values = [
-                        userId
-                        ];
 
-      dbPool.query(queryString, values, (error, queryResult) => {
-      const queryString = 'INSERT INTO questions (existingsize, height, weight, belly, fit, collar, front, cuff, customersize, user_id, username) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING customersize';
-      //FIGURE OUT HOW TO GET USER ID---------------------------------------------------------------
-      const values = [
-                        user.existingsize,
-                        user.height,
-                        user.weight,
-                        user.belly,
-                        user.fit,
-                        user.collar,
-                        user.front,
-                        user.cuff,
-                        user.customersize,
-                        userId,
-                        userName
-                        ];
-
-      dbPool.query(queryString, values, (error, queryResult1) => {
-        // console.log(queryResult);
-        // invoke callback function with results after query has executed
-        callback(error, queryResult, queryResult1);
-      });
-        // console.log("USER INFO IS: ",queryResult);
-        // invoke callback function with results after query has executed
-        //callback(error, queryResult);
-      });
-    };
 
 

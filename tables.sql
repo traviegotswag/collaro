@@ -33,51 +33,56 @@ CREATE TABLE IF NOT EXISTS questions (
 
 CREATE TABLE IF NOT EXISTS measurements (
   id serial PRIMARY KEY,
-  shoulder text,
- 	chest text,
-	waist text,
-	hips text,
-	shirtlength text,
-	sleevelength text,
-	elbow text,
-	leftcuff text,
-	rightcuff text,
-	cufflength text,
-	collar text,
-	product_id text
+  shoulder integer,
+ 	chest integer,
+	waist integer,
+	hips integer,
+	shirtlength integer,
+	sleevelength integer,
+	elbow integer,
+	leftcuff integer,
+	rightcuff integer,
+	cufflength integer,
+	collar integer,
+	user_id integer,
+	product_id integer
  );
 
 
 CREATE TABLE IF NOT EXISTS slimsizes (
   id serial PRIMARY KEY,
   size text,
-  shoulder text,
- 	chest text,
-	waist text,
-	hips text,
-	shirtlength text,
-	sleevelength text,
-	elbow text,
-	leftcuff text,
-	rightcuff text,
-	cufflength text,
-	collar text
+  shoulder integer,
+ 	chest integer,
+	waist integer,
+	hips integer,
+	shirtlength integer,
+	sleevelength integer,
+	elbow integer,
+	leftcuff integer,
+	rightcuff integer,
+	cufflength integer,
+	collar integer,
+	user_id integer,
+	product_id integer
  );
 
 CREATE TABLE IF NOT EXISTS relaxedsizes (
   id serial PRIMARY KEY,
   size text,
-  shoulder text,
- 	chest text,
-	waist text,
-	hips text,
-	shirtlength text,
-	sleevelength text,
-	elbow text,
-	leftcuff text,
-	rightcuff text,
-	cufflength text,
-	collar text
+  shoulder integer,
+ 	chest integer,
+	waist integer,
+	hips integer,
+	shirtlength integer,
+	sleevelength integer,
+	elbow integer,
+	leftcuff integer,
+	rightcuff integer,
+	cufflength integer,
+	collar integer,
+	user_id integer,
+	product_id integer
 );
 
 CREATE TABLE IF NOT EXISTS products (
