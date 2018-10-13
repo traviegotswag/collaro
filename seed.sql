@@ -4,8 +4,8 @@
 -- INSERT INTO questions (existingsize, height, weight, belly, fit, collar, front, cuff, customersize, user_id, username) VALUES ('S','1.78m','62kg','small','slim','mandarin,'concealed','angled','measuredsize',2,'faidhi');
 
 -- -- MEASUREMENTS
--- INSERT INTO measurements (shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar, product_id) VALUES (16.5,38,35,37.5,26.5,24.25,11.75,9.25,9.25,3,15,1);
--- INSERT INTO measurements (shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar, product_id) VALUES (17.5,39.5,37.5,39.5,27,25,13.25,9.75,10.25,3,16,1);
+-- INSERT INTO measurements (shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar, user_id, product_id) VALUES (16.5,38,35,37.5,26.5,24.25,11.75,9.25,9.25,3,15,1,0);
+-- INSERT INTO measurements (shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar, user_id, product_id) VALUES (17.5,39.5,37.5,39.5,27,25,13.25,9.75,10.25,3,16,1);
 
 -- SLIMSIZES
 INSERT INTO slimsizes (size, shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar) VALUES ('XS',16.5,39,36,38,28,24,11,8.5,8.5,2.5,15);
@@ -28,6 +28,4 @@ INSERT INTO relaxedsizes (size, shoulder, chest, waist, hips, shirtlength, sleev
 -- INSERT INTO products (category,user_id) VALUES('lstuckout',1);
 -- INSERT INTO products (category,user_id) VALUES('lstuckin',2);
 -- INSERT INTO products (category,user_id) VALUES('lstuckin',2);
-
-
 

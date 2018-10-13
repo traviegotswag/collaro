@@ -18,12 +18,16 @@ module.exports = (app, db) => { //references db from index.js
 // Change the root route to display all tweets.
 
 
-// CRUD users
+//-------------------------------------------- CRUD users - GET
+
 app.get('/users/new/', users.signup);
 app.get('/users/login/', users.loginForm);
 app.get('/users/questionnaire/', users.questionnaireForm);
 app.get('/users/:username', users.userhome);
 app.get('/users/logout', users.logout);
+// app.put('/users/:username/', users.editMeasurements);
+
+//-------------------------------------------- CRUD users - POST
 
 app.post('/users/new', users.create);
 app.post('/users/login', users.login);
@@ -35,42 +39,3 @@ app.post('/users/questionnaire', users.questionnaire);
 
 };
 
-//EXAMPLE OF NESTED QUERY
-// const getPokemon = (request, response) => {
-
-//     const queryString = `SELECT * FROM pokemon WHERE id = ${request.params.id}`;
-
-//     const queryString2 = `
-//         SELECT pokemon.id AS pokemonid, pokemon.name AS pokemonname, users_pokemon.user_id AS trainerid, users.name AS trainername
-
-//         FROM users
-//         INNER JOIN users_pokemon
-//         ON (users.id = users_pokemon.user_id)
-//         INNER JOIN pokemon
-//         ON (users_pokemon.pokemon_id = pokemon.id)
-
-//         WHERE users_pokemon.pokemon_id = ${request.params.id}`;
-
-
-//     pool.query(queryString, (err, result) => {
-
-//         if (err) {console.error('Query error: ', err.stack);}
-
-//         else {
-
-//             pool.query(queryString2, (err2, result2) => {
-
-//                 if (err2) {console.error('Query2 error: ', err2.stack);}
-
-//                 else {
-
-//                     console.log('Query result: ', result);
-//                     console.log('Query2 result: ', result2)
-
-//                     response.render('pokemon/pokemon', { pokemon: result.rows[0], trainers: result2.rows });
-
-//                 };
-//             });
-//         };
-//     });
-// };

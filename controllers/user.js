@@ -116,84 +116,59 @@ module.exports = (db) => {
         });
     };
 
-    //BACKUP
-
-    // // Nested query to display user's home page
-    // const userhome = (request, response) => {
-    //     var userId = request.cookies['userid'];
-
-    //     db.user.userhome(request.body, userId, (error1, error2, questionsQueryResult, smartSizeQueryResult) => {
-    //         if (error1) {
-    //             console.error('error1: ', error1);
-    //             response.sendStatus(500);
-    //         } else if (error2) {
-    //             console.error('error2: ', error2);
-    //             response.sendStatus(500);
-    //         } else if (questionsQueryResult.rowCount >= 1) {
-    //             var userProfile = questionsQueryResult.rows;
-    //             var userMeasurements = smartSizeQueryResult.rows;
-    //             // console.log("userProfile: ", userProfile);
-    //             // console.log("userMeasurements: ", userMeasurements);
-    //             response.render('user/home', { questions: userProfile, measurements: userMeasurements });
-    //         };
-    //     });
-    // };
-
-    // const editMeasurements = (request, response) => {
-    //   let id = request.params['id'];
-    //   let pokemon = request.body;
-
-    //   const values = [pokemon.num, pokemon.name, pokemon.img, pokemon.height, pokemon.weight, id];
-    //   console.log(queryString);
-    //   pool.query(queryString, values, (error, queryResult) => {
-    //     if (err) {
-    //       console.error('Query error:', error.stack);
-    //     } else {
-    //       console.log('Query result:', result);
-
-    //       // redirect to home page
-    //       response.redirect('/');
-    //     }
-    //   });
-    // }
-
-    // old nested query code
-    // const userhome = (request,response) => {
-    //     var userId = request.cookies['userid'];
-    //     //NEED TO DEFINE customerFit and customerSize
-    //     db.user.userhome(request.body, userId, customerFit, customerSize, (error1,questionsQueryResult), (error2,smartSizeQueryResult) => {
-    //         if (error) {
-    //             console.error('error displaying user home page', error);
-    //             response.sendStatus(500);
-    //         } else if (questionsQueryResult.rowCount >= 1) {
-    //             var userProfile = questionsQueryResult.rows;
-    //             var userMeasurements = smartSizeQueryResult.rows;
-    //             response.render('user/home', {questions: userProfile, measurements: userMeasurements});
-    //         }
-    //     });
-    // }
 
 // ----------------------------------------------------------------
-
-    // BACKUP
-    // const userhome = (request,response) => {
-    //     var userId = request.cookies['userid'];
-    //     db.user.userhome(request.body, userId, (error, queryResult) => {
-    //         if (error) {
-    //             console.error('error displaying user home page', error);
-    //             response.sendStatus(500);
-    //         } else if (queryResult.rowCount >= 1) {
-    //             var userInfo = queryResult.rows;
-    //             response.render('user/home', {questions: userInfo});
-    //         }
-    //     });
-    // }
 
     const logout = (request, response) => {
         response.clearCookie('loggedIn');
         response.clearCookie('userid');
         response.clearCookie('username');
         response.redirect('/users/login/');
+
+// ----------------------------------------------------------------
+
+  const editMeasurements = (request, response) => {
+      let id = request.params['id'];
+      let pokemon = request.body;
+      const queryString = 'UPDATE "measurements" SET "num"=($1), "name"=($2), "img"=($3), "height"=($4), "weight"=($5) WHERE "id"=($6)';
+      const values = [pokemon.num, pokemon.name, pokemon.img, pokemon.height, pokemon.weight, id];
+      console.log(queryString);
+      pool.query(queryString, values, (err, result) => {
+        if (err) {
+          console.error('Query error:', err.stack);
+        } else {
+          console.log('Query result:', result);
+
+          // redirect to home page
+          response.redirect('/');
+        }
+      });
+    }
+
+
+
+    const editMeasurements = (request, response) => {
+      let id = request.params['id'];
+      let pokemon = request.body;
+      const queryString = 'UPDATE "pokemon" SET "num"=($1), "name"=($2), "img"=($3), "height"=($4), "weight"=($5) WHERE "id"=($6)';
+      const values = [pokemon.num, pokemon.name, pokemon.img, pokemon.height, pokemon.weight, id];
+      console.log(queryString);
+      pool.query(queryString, values, (err, result) => {
+        if (err) {
+          console.error('Query error:', err.stack);
+        } else {
+          console.log('Query result:', result);
+
+          // redirect to home page
+          response.redirect('/');
+        }
+      });
+    }
+
+
+
+
+
     };
 
 
@@ -209,8 +184,10 @@ module.exports = (db) => {
     login,
     questionnaireForm,
     questionnaire,
+    userhome,
     logout,
-    userhome
+    editMeasurements
+
   };
 
 }
