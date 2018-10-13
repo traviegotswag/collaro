@@ -94,6 +94,7 @@ module.exports = (db) => {
     // Nested query to display user's home page
     const userhome = (request, response) => {
         var userId = request.cookies['userid'];
+        var username = request.cookies['username'];
 
         db.user.userhome(request.body, userId, (error1, error2, error3, questionsQueryResult, smartSizeQueryResult, insertSizeQueryResult) => {
             if (error1) {
@@ -111,7 +112,7 @@ module.exports = (db) => {
 
                 // console.log("userProfile: ", userProfile);
                 // console.log("userMeasurements: ", userMeasurements);
-                response.render('user/home', { questions: userProfile, measurements: userMeasurements });
+                response.render('user/home', { questions: userProfile, measurements: userMeasurements, username: username});
             };
         });
     };
@@ -124,52 +125,68 @@ module.exports = (db) => {
         response.clearCookie('userid');
         response.clearCookie('username');
         response.redirect('/users/login/');
+    };
 
 // ----------------------------------------------------------------
 
-  const editMeasurements = (request, response) => {
-      let id = request.params['id'];
-      let pokemon = request.body;
-      const queryString = 'UPDATE "measurements" SET "num"=($1), "name"=($2), "img"=($3), "height"=($4), "weight"=($5) WHERE "id"=($6)';
-      const values = [pokemon.num, pokemon.name, pokemon.img, pokemon.height, pokemon.weight, id];
-      console.log(queryString);
-      pool.query(queryString, values, (err, result) => {
-        if (err) {
-          console.error('Query error:', err.stack);
-        } else {
-          console.log('Query result:', result);
-
-          // redirect to home page
-          response.redirect('/');
-        }
-      });
-    }
-
-
-
-    const editMeasurements = (request, response) => {
-      let id = request.params['id'];
-      let pokemon = request.body;
-      const queryString = 'UPDATE "pokemon" SET "num"=($1), "name"=($2), "img"=($3), "height"=($4), "weight"=($5) WHERE "id"=($6)';
-      const values = [pokemon.num, pokemon.name, pokemon.img, pokemon.height, pokemon.weight, id];
-      console.log(queryString);
-      pool.query(queryString, values, (err, result) => {
-        if (err) {
-          console.error('Query error:', err.stack);
-        } else {
-          console.log('Query result:', result);
-
-          // redirect to home page
-          response.redirect('/');
-        }
-      });
-    }
-
-
-
-
-
+    const editProfile = (request, response) => {
+        var userId = request.cookies['userid'];
+        var username = request.cookies['username'];
+        db.user.editProfile(request.body, userId, (error1, error2, questionsQueryResult, smartSizeQueryResult) => {
+                if (error1) {
+                    console.error('error1: ', error1);
+                    response.sendStatus(500);
+                } else if (error2) {
+                    console.error('error2: ', error2);
+                    response.sendStatus(500);
+                } else if (questionsQueryResult.rowCount >= 1) {
+                    var userProfile = questionsQueryResult.rows;
+                    var userMeasurements = smartSizeQueryResult.rows;
+                    // console.log("userProfile: ", userProfile);
+                    // console.log("userMeasurements: ", userMeasurements);
+                    response.render('user/editprofile', { questions: userProfile, measurements: userMeasurements, username: username });
+                };
+        });
     };
+
+
+      const updateProfile = (request, response) => {
+          let username = request.params['username'];
+          let userId = request.cookies['userid']
+          let userHomePage = "/users/" + username
+          let userProfile = request.body;
+
+          db.user.updateProfile(request.body, userId, (error1, error2, questionsQueryResult, measurementsQueryResult) => {
+            if (error1) {
+                console.error('Question query error:', error1);
+            } else if (error2) {
+                console.error('Measurementt query error:', error2);
+            } else {
+              console.log('Question query result:', questionsQueryResult);
+              console.log('Measurements query result:', measurementsQueryResult);
+              response.redirect(userHomePage);
+            }
+          });
+        }
+
+
+  //   const editMeasurements = (request, response) => {
+  //     let id = request.params['id'];
+  //     let pokemon = request.body;
+  //     const queryString = 'UPDATE "pokemon" SET "num"=($1), "name"=($2), "img"=($3), "height"=($4), "weight"=($5) WHERE "id"=($6)';
+  //     const values = [pokemon.num, pokemon.name, pokemon.img, pokemon.height, pokemon.weight, id];
+  //     console.log(queryString);
+  //     pool.query(queryString, values, (err, result) => {
+  //       if (err) {
+  //         console.error('Query error:', err.stack);
+  //       } else {
+  //         console.log('Query result:', result);
+
+  //         // redirect to home page
+  //         response.redirect('/');
+  //       }
+  //     });
+  //   }
 
 
   /**
@@ -186,8 +203,8 @@ module.exports = (db) => {
     questionnaire,
     userhome,
     logout,
-    editMeasurements
-
+    editProfile,
+    updateProfile
   };
 
 }

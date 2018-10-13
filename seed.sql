@@ -28,4 +28,3 @@ INSERT INTO relaxedsizes (size, shoulder, chest, waist, hips, shirtlength, sleev
 -- INSERT INTO products (category,user_id) VALUES('lstuckout',1);
 -- INSERT INTO products (category,user_id) VALUES('lstuckin',2);
 -- INSERT INTO products (category,user_id) VALUES('lstuckin',2);
-

@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS measurements (
 	leftcuff integer,
 	rightcuff integer,
 	cufflength integer,
-	collar integer,
+	collarwidth integer,
 	user_id integer,
 	product_id integer
  );

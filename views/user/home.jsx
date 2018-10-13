@@ -4,10 +4,12 @@ var React = require("react");
 //     return (data * 2.5);
 // }
 
-class UserHome extends React.Component {
+class userHome extends React.Component {
 
   render() {
     var userQuestionsArray = this.props.questions;
+    var username = this.props.username;
+    var editUserProfile = "/users/" + username + "/edit"
 
     let userQuestions = userQuestionsArray.map(array => {
         return <div>
@@ -24,7 +26,6 @@ class UserHome extends React.Component {
     });
 
     var userMeasurementsArray = this.props.measurements;
-
     let userMeasurements = userMeasurementsArray.map(array => {
         return <div>
             <li>Shoulder: {array.shoulder}</li>
@@ -37,7 +38,7 @@ class UserHome extends React.Component {
             <li>Left Cuff Width: {array.leftcuff}</li>
             <li>Right Cuff Width: {array.rightcuff}</li>
             <li>Cuff Length: {array.cufflength}</li>
-            <li>Collar Width: {array.collar}</li>
+            <li>Collar Width: {array.collarwidth}</li>
         </div>
     });
 
@@ -60,22 +61,21 @@ class UserHome extends React.Component {
                 <br></br>
 
             <div>
-
                     <h4>Current Measurements (in inches)</h4>
                           <ul>
                             {userMeasurements}
                           </ul>
-                    <div>If you opted to be physically measured, all your measurements will be indicated as 0 for now.
-                    </div>
+                    <p>If you would like to be physically measured, all your measurements will be indicated as 0 for now.
+                    </p>
             </div>
 
             <form className="user-form" method="POST" action="/users/logout">
                 <input type="submit" value="Logout"/>
             </form>
 
+                <button name="Edit Profile"><a href={editUserProfile}>Edit Profile</a></button>
+
         </body>
-
-
 
 
       </html>
@@ -83,22 +83,7 @@ class UserHome extends React.Component {
     }
 }
 
-module.exports = UserHome;
+module.exports = userHome;
 
 
-
-             //  <form className="user-form" method="POST" action="/users/new">
-             //    <input type="submit" value="Edit preferences"/>
-             // </form>
-
-             //  <form className="user-form" method="POST" action="/users/new">
-             //
-            // </form>
-
-                 //            <form className="edit-measurements-form" method="POST" action={actionPathEditMeasurements}>
-                 //    <input type="submit" value="Edit measurements"/>
-                 // </form>
-
-// <img style= {{height: 200}} src={item.photo_url}/>
-// {userMeasurements}
 
