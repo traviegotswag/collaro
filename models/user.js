@@ -206,7 +206,7 @@ module.exports = (dbPool) => {
 
             dbPool.query(queryString1, values1, (error1, questionsQueryResult) => {
                         //END OF QUERY 1, START OF NESTED QUERY 2
-                const queryString2 = 'UPDATE "measurements" SET "shoulder"=($1), "chest"=($2), "waist"=($3), "hips"=($4), "shirtlength"=($5), "sleevelength"=($6), "elbow"=($7), "leftcuff"=($8), "rightcuff"=($9), "cufflength"=($10), "collarwidth"=($11) WHERE "user_id"=($12)';
+                const queryString2 = 'UPDATE "measurements" SET "shoulder"=($1), "chest"=($2), "waist"=($3), "hips"=($4), "shirtlength"=($5), "sleevelength"=($6), "elbow"=($7), "leftcuff"=($8), "rightcuff"=($9), "cufflength"=($10), "collarwidth"=($11), "time_modified"= CURRENT_TIMESTAMP WHERE "user_id"=($12)';
                 const values2 = [
                         user.shoulder,
                         user.chest,
@@ -230,6 +230,46 @@ module.exports = (dbPool) => {
             });
     }
 
+// ----------------------------------------------------------------
+
+    const uploadFitPictures = (user, userId, userName, callback) => {
+      // set up query
+      console.log(user);
+      const queryString = 'INSERT INTO fitpictures (user_id, username) VALUES ($1, $2)';
+      const values = [
+                        userId,
+                        userName,
+                    ];
+
+      dbPool.query(queryString, values, (error, queryResult) => {
+        if (error) {
+            console.log("RESULT HOOOO: ", queryResult);
+            callback(error, queryResult);
+        } else {
+            callback(null, queryResult.rows[0])
+        }
+      });
+    };
+
+
+  // const update = (user, callback) => {
+  //   const queryString = `UPDATE users SET avatar = ($1), bio = ($2) WHERE name = ($3) RETURNING *`;
+  //   const values = [user.avatar, user.bio, user.username];
+  //   pool.query(queryString, values, (error, queryResult) => {
+  //     if (error) {
+  //       console.log('error updating user bio:', error);
+  //       callback(error, null);
+  //     } else {
+  //       callback(null, queryResult.rows[0]);
+  //     }
+  //   });
+  // };
+
+ const uploadFitPictures = multer.diskStorage({
+     destination: function(req, file, callback) { callback(null, "/public/uploads"); },
+     filename: function(req, file, callback) { callback(null, file.fieldname + "_" + Date.now() + "_" + file.originalname); }
+ });
+
 
     return {
         encrypt,
@@ -238,7 +278,8 @@ module.exports = (dbPool) => {
         questionnaire,
         userhome,
         editProfile,
-        updateProfile
+        updateProfile,
+        uploadFitPictures
     };
 };
 

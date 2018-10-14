@@ -2,6 +2,8 @@ const express = require('express');
 const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
 const db = require('./db');
+const multer = require('multer');
+
 
 /**
  * ===================================
@@ -13,6 +15,8 @@ const db = require('./db');
 const app = express();
 
 // Set up middleware
+var upload = multer({storage: Storage}).array("imgUploader", 6);
+
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
 app.use(express.json());
@@ -21,6 +25,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({
   extended: true
 }));
+
 
 // Set react-views to be the default view engine
 const reactEngine = require('express-react-views').createEngine();
@@ -35,8 +40,8 @@ app.engine('jsx', reactEngine);
  */
 
 // Import routes to match incoming requests
-require('./routes')(app, db); //APP being express, DB REFERS TO DB FILE
-
+require('./routes')(app, db, upload); //APP being express, DB REFERS TO DB FILE
+//DOES THE SEQUENCE MATTER?????
 
 // Root GET request (it doesn't belong in any controller file)
 app.get('/', (request, response) => {
@@ -44,36 +49,9 @@ app.get('/', (request, response) => {
     if (userCookies) {
         response.redirect('user/');
     } else {
-        response.render('home');
+        response.render('root');
     }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

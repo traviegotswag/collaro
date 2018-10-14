@@ -1,6 +1,6 @@
 //WHEN YOU POST INFO, IT COMES TO THE CONTROLLER, SO ANY REQUEST EG. REQ.BODY SHOULD BE DONE HERE
 
-module.exports = (db) => {
+module.exports = (db, upload) => {
 
   /**
    * ===========================================
@@ -151,7 +151,6 @@ module.exports = (db) => {
         });
     };
 
-
       const updateProfile = (request, response) => {
           let username = request.params['username']
           let userId = request.cookies['userid']
@@ -172,23 +171,32 @@ module.exports = (db) => {
         }
 
 
-  //   const editMeasurements = (request, response) => {
-  //     let id = request.params['id'];
-  //     let pokemon = request.body;
-  //     const queryString = 'UPDATE "pokemon" SET "num"=($1), "name"=($2), "img"=($3), "height"=($4), "weight"=($5) WHERE "id"=($6)';
-  //     const values = [pokemon.num, pokemon.name, pokemon.img, pokemon.height, pokemon.weight, id];
-  //     console.log(queryString);
-  //     pool.query(queryString, values, (err, result) => {
-  //       if (err) {
-  //         console.error('Query error:', err.stack);
-  //       } else {
-  //         console.log('Query result:', result);
+// ----------------------------------------------------------------
 
-  //         // redirect to home page
-  //         response.redirect('/');
-  //       }
-  //     });
-  //   }
+        // app.post('/photos/upload', upload.array('photos', 6), function (req, res, next) {
+        //   // req.files is array of `photos` files
+        //   // req.body will contain the text fields, if there were any
+        // })
+
+
+    // WHAT IS THIS NEXT?
+    const uploadFitPictures = (request,response) => {
+        var userId = request.cookies['userid'];
+        var userName = request.cookies['username'];
+
+        db.user.uploadFitPictures(request.files, userId, userName, (error, queryResult) => {
+            if (error) {
+                console.error('error uploading pictures: ', error);
+                response.sendStatus(500);
+            } else if (queryResult.rowCount >= 1) {
+                console.log("RESULT HEY", queryResult);
+                response.redirect('/users/' + userName);
+            }
+        });
+    }
+
+// upload.array('photos', 12)
+
 
 
   /**
@@ -206,7 +214,8 @@ module.exports = (db) => {
     userhome,
     logout,
     editProfile,
-    updateProfile
+    updateProfile,
+    uploadFitPictures
   };
 
 }

@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS slimsizeswithoutbelly;
 DROP TABLE IF EXISTS slimsizeswithbelly;
 DROP TABLE IF EXISTS relaxedsizeswithoutbelly;
 DROP TABLE IF EXISTS relaxedsizeswithbelly;
+DROP TABLE IF EXISTS fitpictures;
 -- DROP TABLE IF EXISTS products;
 -- DROP TABLE IF EXISTS style;
 
@@ -16,6 +17,7 @@ CREATE TABLE IF NOT EXISTS users (
   email text,
   username text,
   password text
+
 );
 
 CREATE TABLE IF NOT EXISTS questions (
@@ -47,7 +49,9 @@ CREATE TABLE IF NOT EXISTS measurements (
 	cufflength DECIMAL(13,2)  NOT NULL,
 	collarwidth DECIMAL(13,2)  NOT NULL,
 	user_id integer,
-	product_id integer
+	product_id integer,
+	time_created TIMESTAMP DEFAULT now(),
+	time_modified text
  );
 
 
@@ -122,6 +126,13 @@ CREATE TABLE IF NOT EXISTS relaxedsizeswithbelly (
 	user_id integer,
 	product_id integer
 );
+
+CREATE TABLE IF NOT EXISTS fitpictures (
+  id serial PRIMARY KEY,
+  user_id integer,
+  username text,
+  image_url text
+ )
 
 -- CREATE TABLE IF NOT EXISTS products (
 --   id serial PRIMARY KEY,

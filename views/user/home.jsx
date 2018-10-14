@@ -10,6 +10,7 @@ class userHome extends React.Component {
     var userQuestionsArray = this.props.questions;
     var username = this.props.username;
     var editUserProfile = "/users/" + username + "/edit"
+    var userProfilePath = "/users/" + username + "/uploadFitPictures"
 
     let userQuestions = userQuestionsArray.map(array => {
         return <div>
@@ -52,7 +53,6 @@ class userHome extends React.Component {
 
             <div>
                 <h3>User Profile</h3>
-                    <br></br>
                         <h4>Your Preferences</h4>
                           <ul>
                             {userQuestions}
@@ -75,8 +75,13 @@ class userHome extends React.Component {
 
                 <button name="Edit Profile"><a href={editUserProfile}>Edit Profile</a></button>
 
-        </body>
+            <form method="POST" action={userProfilePath} enctype="multipart/form-data">
+              <input type="file" name="imgUploader" multiple />
+              <input type="submit" name="submit" value="upload" />
+            </form>
 
+
+        </body>
 
       </html>
     );
@@ -85,5 +90,10 @@ class userHome extends React.Component {
 
 module.exports = userHome;
 
+
+                // <form enctype="multipart/form-data" action="/users/" method="POST">
+                //   <input type="file" name="myFile"/>
+                //   <input type="submit" class="btn btn-primary"/>
+                // </form>
 
 
