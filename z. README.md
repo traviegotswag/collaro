@@ -1,10 +1,9 @@
-# Tweedr!!!
+# Custom-shirt by Collaro 
 
-Let's make a cool new app called TWEEDR!! Not Twitter, geez...
+This app allows users to create a user profile with Collaro before they make a purchase. Users simply need to answer a list of 10 questions for Collaro to generate their unique size for their custom shirt. And if the wish to make minor adjustments to their preferences or their shirt measurements, they can do it anytime, anywhere. 
 
-### Wireframe!
+With their measurements stored in Collaro's database, they can proceed to purchase their custom-shirt which they will receive between 1 to 2 weeks. 
 
-![tweedr](https://git.generalassemb.ly/wdi-nyc-goat/LAB_Tweedr/raw/master/assets/tweedr.png)
 
 ### Description
 If a user goes to the root route `/` they see all the tweets.
@@ -26,48 +25,3 @@ Create each part of your app step by step.
 
 4. Change the root route to display all tweets.
 
-
-#### Further
-Users can follow other users.
-
-#### Further
-Users can see just the tweets of the users that they follow.
-
-#### Further
-Users can see just the tweets of the users that follow them.
-
-#### Further
-Create user profile pages. `/users/1`
-
-#### Further
-Each reference on a page should be a link to that thing- (each tweet should link to a single tweet, each user should link to their profile, etc.)
-
-#### Further
-Validate that the user trying to register is using a name unique to the system.
-
-#### Further
-Make sure that users cannot "follow" people more than once.
-
-#### Further
-Add a new column to the db that tracks the time that the tweet was created.
-
-#### Further
-Add sort by date to each kind of tweet feed you made.
-
-#### Further
-Add the ability to edit a tweet.
-
-#### Further
-Add the ability to edit.
-
-#### Further
-Add the ability to delete things.
-
-#### Further
-Add bootstrap to your app.
-
-#### Further
-Add the ability to add a profile picture- see `input` `type=file` and `form` `enctype=multipart/formdata`
-
-#### Further
-Add the ability to tweet photos.

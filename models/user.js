@@ -69,6 +69,8 @@ module.exports = (dbPool) => {
 
 // ----------------------------------------------------
 
+//FIND A WAY TO SHOW UPDATED MEASUREMENTS INSTEAD OF PULLING OUT FROM THE SIZE TABLE
+
     const userhome = (user, userId, callback) => {
 
         var queryString1 = 'SELECT existingsize, height, weight, belly, fit, collar, front, cuff, customersize FROM questions WHERE user_id = ($1)'
@@ -79,23 +81,41 @@ module.exports = (dbPool) => {
             var customerCollaroSize = questionsQueryResult.rows[0].customersize;
             var customerExistingSize = questionsQueryResult.rows[0].existingsize;
             var customerFit = questionsQueryResult.rows[0].fit;
+            var customerBelly = questionsQueryResult.rows[0].belly;
 
-                if (customerCollaroSize == "Algorithm-generated smart size") {
+            // // If measurements exist, then no need to run this next query, but instead run another query to show from measurements
+            // if () {
+            //     var queryString2 = SELECT * measurements WHERE user_id = ($1);
+            //     var values2 = [userId];
+            // } else
+
+            if (customerCollaroSize == "Algorithm-generated smart size") {
                    if (customerFit == "Slim") {
-                        var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM slimsizes WHERE size = ($1)';
+                        if (customerBelly == "No belly") {
+                            var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collarwidth FROM slimsizeswithoutbelly WHERE size = ($1)';
+                        } else if (customerBelly == "Slight belly") {
+                            var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collarwidth FROM slimsizeswithbelly WHERE size = ($1)';
+                        }
                     } else if (customerFit == "Relaxed") {
-                        var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM relaxedsizes WHERE size = ($1)';
+                        if (customerBelly == "No belly") {
+                            var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collarwidth FROM relaxedsizeswithoutbelly WHERE size = ($1)';
+                        } else if (customerBelly == "Slight belly") {
+                            var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collarwidth FROM relaxedsizeswithbelly WHERE size = ($1)';
+                        }
                     }
-                        var values2 = [customerExistingSize];
+                    var values2 = [customerExistingSize];
+                } else if (customerCollaroSize == "Be physically measured in person") {
 
-                    } else if (customerCollaroSize == "Be physically measured in person") {
                        if (customerFit == "Slim") {
-                            var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM slimsizes WHERE size = ($1)';
+                            var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collarwidth FROM slimsizeswithoutbelly WHERE size = ($1)';
                         } else if (customerFit == "Relaxed") {
-                            var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM relaxedsizes WHERE size = ($1)';
+                            var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collarwidth FROM relaxedsizeswithoutbelly WHERE size = ($1)';
                         }
                         var values2 = ['To be measured'];
                     }
+
+
+
 
 
             dbPool.query(queryString2, values2, (error2, smartSizeQueryResult) => {
@@ -135,31 +155,34 @@ module.exports = (dbPool) => {
 
         dbPool.query(queryString1, values1, (error1, questionsQueryResult) => {
             //END OF QUERY 1, START OF NESTED QUERY 2
-            var customerCollaroSize = questionsQueryResult.rows[0].customersize;
-            var customerExistingSize = questionsQueryResult.rows[0].existingsize;
-            var customerFit = questionsQueryResult.rows[0].fit;
+            var queryString2 = 'SELECT * FROM measurements WHERE user_id = ($1)'
+            var values2 = [userId];
+            //Backup
+            // var customerCollaroSize = questionsQueryResult.rows[0].customersize;
+            // var customerExistingSize = questionsQueryResult.rows[0].existingsize;
+            // var customerFit = questionsQueryResult.rows[0].fit;
 
-                if (customerCollaroSize == "Algorithm-generated smart size") {
-                   if (customerFit == "Slim") {
-                        var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM slimsizes WHERE size = ($1)';
-                    } else if (customerFit == "Relaxed") {
-                        var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM relaxedsizes WHERE size = ($1)';
-                    }
-                        var values2 = [customerExistingSize];
+            //     if (customerCollaroSize == "Algorithm-generated smart size") {
+            //        if (customerFit == "Slim") {
+            //             var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM slimsizes WHERE size = ($1)';
+            //         } else if (customerFit == "Relaxed") {
+            //             var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM relaxedsizes WHERE size = ($1)';
+            //         }
+            //             var values2 = [customerExistingSize];
 
-                    } else if (customerCollaroSize == "Be physically measured in person") {
-                       if (customerFit == "Slim") {
-                            var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM slimsizes WHERE size = ($1)';
-                        } else if (customerFit == "Relaxed") {
-                            var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM relaxedsizes WHERE size = ($1)';
-                        }
-                        var values2 = ['To be measured'];
-                    }
+            //         } else if (customerCollaroSize == "Be physically measured in person") {
+            //            if (customerFit == "Slim") {
+            //                 var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM slimsizes WHERE size = ($1)';
+            //             } else if (customerFit == "Relaxed") {
+            //                 var queryString2 = 'SELECT shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar FROM relaxedsizes WHERE size = ($1)';
+            //             }
+            //             var values2 = ['To be measured'];
+            //         }
 
 
-            dbPool.query(queryString2, values2, (error2, smartSizeQueryResult) => {
+            dbPool.query(queryString2, values2, (error2, measurementsQueryResult) => {
 
-                    callback(error1, error2, questionsQueryResult, smartSizeQueryResult);
+                    callback(error1, error2, questionsQueryResult, measurementsQueryResult);
 
             });
         });
@@ -182,10 +205,10 @@ module.exports = (dbPool) => {
 
             dbPool.query(queryString1, values1, (error1, questionsQueryResult) => {
                         //END OF QUERY 1, START OF NESTED QUERY 2
-                const queryString2 = 'UPDATE "measurements" SET "chest"=($1), "shoulder"=($2), "waist"=($3), "hips"=($4), "shirtlength"=($5), "sleevelength"=($6), "elbow"=($7), "leftcuff"=($8), "rightcuff"=($9), "cufflength"=($10) WHERE "user_id"=($11)';
+                const queryString2 = 'UPDATE "measurements" SET "shoulder"=($1), "chest"=($2), "waist"=($3), "hips"=($4), "shirtlength"=($5), "sleevelength"=($6), "elbow"=($7), "leftcuff"=($8), "rightcuff"=($9), "cufflength"=($10), "collarwidth"=($11) WHERE "user_id"=($12)';
                 const values2 = [
-                        user.chest,
                         user.shoulder,
+                        user.chest,
                         user.waist,
                         user.hips,
                         user.shirtlength,
@@ -194,6 +217,7 @@ module.exports = (dbPool) => {
                         user.leftcuff,
                         user.rightcuff,
                         user.cufflength,
+                        user.collarwidth,
                         userId
                     ];
 
@@ -204,14 +228,6 @@ module.exports = (dbPool) => {
                         });
             });
     }
-
-
-
-
-
-
-
-
 
 
     return {

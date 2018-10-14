@@ -24,7 +24,6 @@ module.exports = (db) => {
                 response.sendStatus(500);
             } else if (queryResult.rowCount >= 1) {
                 console.log('User created successfully');
-                // alert("Welcome to Collaro, your account has been created.");
                 var userId = queryResult.rows[0].id;
                 // console.log(userId);
                 response.cookie('loggedIn', true);
@@ -132,7 +131,7 @@ module.exports = (db) => {
     const editProfile = (request, response) => {
         var userId = request.cookies['userid'];
         var username = request.cookies['username'];
-        db.user.editProfile(request.body, userId, (error1, error2, questionsQueryResult, smartSizeQueryResult) => {
+        db.user.editProfile(request.body, userId, (error1, error2, questionsQueryResult, measurementsQueryResult) => {
                 if (error1) {
                     console.error('error1: ', error1);
                     response.sendStatus(500);
@@ -141,7 +140,7 @@ module.exports = (db) => {
                     response.sendStatus(500);
                 } else if (questionsQueryResult.rowCount >= 1) {
                     var userProfile = questionsQueryResult.rows;
-                    var userMeasurements = smartSizeQueryResult.rows;
+                    var userMeasurements = measurementsQueryResult.rows;
                     // console.log("userProfile: ", userProfile);
                     // console.log("userMeasurements: ", userMeasurements);
                     response.render('user/editprofile', { questions: userProfile, measurements: userMeasurements, username: username });
@@ -151,16 +150,16 @@ module.exports = (db) => {
 
 
       const updateProfile = (request, response) => {
-          let username = request.params['username'];
+          let username = request.params['username']
           let userId = request.cookies['userid']
           let userHomePage = "/users/" + username
           let userProfile = request.body;
 
           db.user.updateProfile(request.body, userId, (error1, error2, questionsQueryResult, measurementsQueryResult) => {
             if (error1) {
-                console.error('Question query error:', error1);
+                console.error('Questions query error:', error1);
             } else if (error2) {
-                console.error('Measurementt query error:', error2);
+                console.error('Measurements query error:', error2);
             } else {
               console.log('Question query result:', questionsQueryResult);
               console.log('Measurements query result:', measurementsQueryResult);

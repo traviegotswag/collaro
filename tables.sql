@@ -4,9 +4,11 @@
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS questions;
 DROP TABLE IF EXISTS measurements;
-DROP TABLE IF EXISTS slimsizes;
-DROP TABLE IF EXISTS relaxedsizes;
-DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS slimsizeswithoutbelly;
+DROP TABLE IF EXISTS slimsizeswithbelly;
+DROP TABLE IF EXISTS relaxedsizeswithoutbelly;
+DROP TABLE IF EXISTS relaxedsizeswithbelly;
+-- DROP TABLE IF EXISTS products;
 -- DROP TABLE IF EXISTS style;
 
 CREATE TABLE IF NOT EXISTS users (
@@ -33,63 +35,99 @@ CREATE TABLE IF NOT EXISTS questions (
 
 CREATE TABLE IF NOT EXISTS measurements (
   id serial PRIMARY KEY,
-  shoulder integer,
- 	chest integer,
-	waist integer,
-	hips integer,
-	shirtlength integer,
-	sleevelength integer,
-	elbow integer,
-	leftcuff integer,
-	rightcuff integer,
-	cufflength integer,
-	collarwidth integer,
+  shoulder DECIMAL(13,2)  NOT NULL,
+ 	chest DECIMAL(13,2)  NOT NULL,
+	waist DECIMAL(13,2)  NOT NULL,
+	hips DECIMAL(13,2)  NOT NULL,
+	shirtlength DECIMAL(13,2)  NOT NULL,
+	sleevelength DECIMAL(13,2)  NOT NULL,
+	elbow DECIMAL(13,2)  NOT NULL,
+	leftcuff DECIMAL(13,2)  NOT NULL,
+	rightcuff DECIMAL(13,2)  NOT NULL,
+	cufflength DECIMAL(13,2)  NOT NULL,
+	collarwidth DECIMAL(13,2)  NOT NULL,
 	user_id integer,
 	product_id integer
  );
 
 
-CREATE TABLE IF NOT EXISTS slimsizes (
+CREATE TABLE IF NOT EXISTS slimsizeswithoutbelly (
   id serial PRIMARY KEY,
   size text,
-  shoulder integer,
- 	chest integer,
-	waist integer,
-	hips integer,
-	shirtlength integer,
-	sleevelength integer,
-	elbow integer,
-	leftcuff integer,
-	rightcuff integer,
-	cufflength integer,
-	collar integer,
+  shoulder DECIMAL(13,2) NOT NULL,
+ 	chest DECIMAL(13,2) NOT NULL,
+	waist DECIMAL(13,2) NOT NULL,
+	hips DECIMAL(13,2)  NOT NULL,
+	shirtlength DECIMAL(13,2)  NOT NULL,
+	sleevelength DECIMAL(13,2)  NOT NULL,
+	elbow DECIMAL(13,2) NOT NULL,
+	leftcuff DECIMAL(13,2)  NOT NULL,
+	rightcuff DECIMAL(13,2) NOT NULL,
+	cufflength DECIMAL(13,2)  NOT NULL,
+	collarwidth DECIMAL(13,2)  NOT NULL,
 	user_id integer,
 	product_id integer
  );
 
-CREATE TABLE IF NOT EXISTS relaxedsizes (
+CREATE TABLE IF NOT EXISTS relaxedsizeswithoutbelly (
   id serial PRIMARY KEY,
   size text,
-  shoulder integer,
- 	chest integer,
-	waist integer,
-	hips integer,
-	shirtlength integer,
-	sleevelength integer,
-	elbow integer,
-	leftcuff integer,
-	rightcuff integer,
-	cufflength integer,
-	collar integer,
+  shoulder DECIMAL(13,2)  NOT NULL,
+ 	chest DECIMAL(13,2)  NOT NULL,
+	waist DECIMAL(13,2)  NOT NULL,
+	hips DECIMAL(13,2)  NOT NULL,
+	shirtlength DECIMAL(13,2)  NOT NULL,
+	sleevelength DECIMAL(13,2)  NOT NULL,
+	elbow DECIMAL(13,2)  NOT NULL,
+	leftcuff DECIMAL(13,2)  NOT NULL,
+	rightcuff DECIMAL(13,2)  NOT NULL,
+	cufflength DECIMAL(13,2)  NOT NULL,
+	collarwidth DECIMAL(13,2)  NOT NULL,
 	user_id integer,
 	product_id integer
 );
 
-CREATE TABLE IF NOT EXISTS products (
+CREATE TABLE IF NOT EXISTS slimsizeswithbelly (
   id serial PRIMARY KEY,
-  category text,
-  user_id text
+  size text,
+  shoulder DECIMAL(13,2)  NOT NULL,
+ 	chest DECIMAL(13,2)  NOT NULL,
+	waist DECIMAL(13,2)  NOT NULL,
+	hips DECIMAL(13,2)  NOT NULL,
+	shirtlength DECIMAL(13,2)  NOT NULL,
+	sleevelength DECIMAL(13,2)  NOT NULL,
+	elbow DECIMAL(13,2)  NOT NULL,
+	leftcuff DECIMAL(13,2)  NOT NULL,
+	rightcuff DECIMAL(13,2)  NOT NULL,
+	cufflength DECIMAL(13,2)  NOT NULL,
+	collarwidth DECIMAL(13,2)  NOT NULL,
+	user_id integer,
+	product_id integer
  );
+
+CREATE TABLE IF NOT EXISTS relaxedsizeswithbelly (
+  id serial PRIMARY KEY,
+  size text,
+  shoulder DECIMAL(13,2)  NOT NULL,
+ 	chest DECIMAL(13,2)  NOT NULL,
+	waist DECIMAL(13,2)  NOT NULL,
+	hips DECIMAL(13,2)  NOT NULL,
+	shirtlength DECIMAL(13,2)  NOT NULL,
+	sleevelength DECIMAL(13,2)  NOT NULL,
+	elbow DECIMAL(13,2)  NOT NULL,
+	leftcuff DECIMAL(13,2)  NOT NULL,
+	rightcuff DECIMAL(13,2)  NOT NULL,
+	cufflength DECIMAL(13,2)  NOT NULL,
+	collarwidth DECIMAL(13,2)  NOT NULL,
+	user_id integer,
+	product_id integer
+);
+
+-- CREATE TABLE IF NOT EXISTS products (
+--   id serial PRIMARY KEY,
+--   category text,
+--   user_id text
+--  );
 
 -- CREATE TABLE IF NOT EXISTS style (
 --   id serial PRIMARY KEY,

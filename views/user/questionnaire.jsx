@@ -33,9 +33,7 @@ class questionnaire extends React.Component {
                 What best describes your mid-section?
                 <select className="belly" name="belly">
                   <option value="No belly" selected>No Belly</option>
-                  <option value="Small belly">Slight Belly</option>
-                  <option value="Medium belly" >Medium Belly</option>
-                  <option value="Big belly" >Loose</option>
+                  <option value="Slight belly">Slight Belly</option>
                 </select>
               </div><br/>
 
