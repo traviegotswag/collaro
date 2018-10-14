@@ -95,7 +95,7 @@ module.exports = (db) => {
         var userId = request.cookies['userid'];
         var username = request.cookies['username'];
 
-        db.user.userhome(request.body, userId, (error1, error2, error3, questionsQueryResult, smartSizeQueryResult, insertSizeQueryResult) => {
+        db.user.userhome(request.body, userId, (error1, error2, error3, error4, measurementsQueryResult, questionsQueryResult, smartSizeQueryResult, insertSizeQueryResult) => {
             if (error1) {
                 console.error('error1: ', error1);
                 response.sendStatus(500);
@@ -104,6 +104,9 @@ module.exports = (db) => {
                 response.sendStatus(500);
             } else if (error3) {
                 console.error('error3: ', error3);
+                response.sendStatus(500);
+            } else if (error4) {
+                console.error('error4: ', error4);
                 response.sendStatus(500);
             } else if (questionsQueryResult.rowCount >= 1) {
                 var userProfile = questionsQueryResult.rows;
