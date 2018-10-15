@@ -8,7 +8,7 @@ module.exports = (db, upload) => {
    * ===========================================
    */
   const signup = (request, response) => {
-    response.render('user/NewUser');
+    response.render('user/newuser');
   };
 
   const create = (request, response) => {
