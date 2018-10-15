@@ -13,7 +13,7 @@ class Home extends React.Component {
               <div id='test' class='col-12 col-md-6 text-container'>
                 <div class='row no-gutters h-100 justify-content-center align-items-center'>
                   <div class='col-10 col-md-9 col-lg-8 col-xl-7'>
-                    <div class='text-header'><a href="/users/new" className="redirect2">Click here for new users</a></div>
+                    <div class='text-header'><a href="/users/new" className="redirect">Click here for new users</a></div>
                         <p class='text-content'></p>
                   </div>
                 </div>
@@ -33,7 +33,7 @@ class Home extends React.Component {
               <div class='order-first col-12 order-md-last col-md-6 text-container'>
                 <div class='row no-gutters h-100 justify-content-center align-items-center'>
                   <div class='col-10 col-md-9 col-lg-8 col-xl-7'>
-                    <p class='text-header'><a href='/users/login' className="redirect2">And here, for our existing users.</a></p>
+                    <p class='text-header'><a href='/users/login' className="redirect">And here, for our existing users.</a></p>
                   </div>
                 </div>
               </div>
