@@ -13,12 +13,14 @@ class Layout extends React.Component {
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
           <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
           <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossOrigin="anonymous" />
-          <title>Collaro</title>
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cormorant+Garamond:400,600,700"/>
+          <link rel="stylesheet" href="/stylesheets/main.css" />
+          <title>Collaro Classic Menswear</title>
         </head>
 
         <body>
 
-          <div className="container mt-5 py-5">
+          <div className="container mt-4 py-2">
             {this.props.children}
           </div>
 
@@ -35,3 +37,13 @@ class Layout extends React.Component {
 module.exports = Layout;
 
 // <Navigation username={this.props.username} />
+// CHECK IF 2ND STYLESHEET WORKS
+
+
+
+
+
+
+
+
+

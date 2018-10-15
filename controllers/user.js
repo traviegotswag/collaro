@@ -115,9 +115,6 @@ module.exports = (db, upload) => {
                 var userProfile = questionsQueryResult.rows;
                 var userMeasurements = smartSizeQueryResult.rows;
                 var userPictures = picturesQueryResult.rows;
-                // console.log(userPictures);
-                // console.log("userProfile: ", userProfile);
-                // console.log("userMeasurements: ", userMeasurements);
                 response.render('user/home', { questions: userProfile, measurements: userMeasurements, pictures: userPictures, username: username} );
             };
         });
@@ -192,6 +189,10 @@ module.exports = (db, upload) => {
         response.redirect('/users/' + userName);
     }
 
+    const aboutUs = (request, response) => {
+        response.render('user/aboutus');
+    };
+
 // ----------------------------------------------------------------
 
   /**
@@ -210,7 +211,8 @@ module.exports = (db, upload) => {
     logout,
     editProfile,
     updateProfile,
-    uploadFitPictures
+    uploadFitPictures,
+    aboutUs
   };
 
 }

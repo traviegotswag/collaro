@@ -1,40 +1,42 @@
 var React = require("react");
-var Default = require('../layout/default');
+var Layout = require('../layout/default')
 
 class NewUser extends React.Component {
   render() {
 
     return (
 
-      <html>
+            <Layout>
 
-        <head />
-          <title>Login to Collaro</title>
+                  <form className="user-form" method="POST" action="/users/new">
+                    <div>
+                        <img src="/images/newuser.jpg" className="img-fluid"/>
+                    </div>
 
-        <body>
+                  <div className ="whitebox">
+                    <h1>No more ill-fitting shirts. </h1>
+                    <h3>Create an account, and get 15% off your first order. </h3>
 
-          <form className="user-form" method="POST" action="/users/new">
-            <div className="background-image">
+                        <div className="newuser-email">
+                            Email: <input className="newuser-email-input" name="email" type="email" required/>
+                        </div>
 
-            </div>
+                        <div className="newuser-username">
+                            Username: <input className="newuser-username-input" name="username" type="text" required/>
+                        </div>
 
-            <div className="user-attribute">
-              Email: <input name="email" type="email" required/>
-            </div>
+                        <div className="newuser-password">
+                            Password: <input className="newuser-password-input" name="password" type="text" required/>
+                        </div>
 
-            <div className="user-attribute">
-              Username: <input name="username" type="text" required/>
-            </div>
-            <div className="user-attribute">
-              Password: <input name="password" type="text" required/>
-            </div>
-            <input name="submit" type="submit"/>
+                        <input className= "newUserSubmitButton img-fluid" name="submit" type="submit"/>
+                </div>
 
-          </form>
 
-        </body>
+                </form>
 
-      </html>
+            </Layout>
+
     );
   }
 }

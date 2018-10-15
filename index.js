@@ -62,13 +62,13 @@ require('./routes')(app, db, upload); //APP being express, DB REFERS TO DB FILE
 // Root GET request (it doesn't belong in any controller file)
 app.get('/', (request, response) => {
     let userCookies = request.cookies['loggedIn'];
+    let username = request.cookies['username'];
     if (userCookies) {
-        response.redirect('user/');
+        response.redirect('/users/' + username);
     } else {
         response.render('root');
     }
 });
-
 
 /**
  * ===================================

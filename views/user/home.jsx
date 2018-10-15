@@ -1,4 +1,4 @@
-var React = require("react");
+var React = require("react")
 var Layout = require('../layout/default')
 
 class userHome extends React.Component {
@@ -11,92 +11,93 @@ class userHome extends React.Component {
 
         let userQuestions = userQuestionsArray.map(array => {
             return <div>
-                <li>Size: {array.existingsize}</li>
-                <li>Height: {array.height}</li>
-                <li>Weight: {array.weight}</li>
-                <li>Belly: {array.belly}</li>
-                <li>Shirt Fit Preference: {array.fit}</li>
-                <li>Collar: {array.collar}</li>
-                <li>Preferred Shirt Front: {array.front}</li>
-                <li>Preferred Shirt Cuff: {array.cuff}</li>
-                <li>How your measurements are generated: {array.customersize}</li>
+                <li><span class="questionsArray">Size: </span>{array.existingsize}</li>
+                <li><span class="questionsArray">Height: </span>{array.height}</li>
+                <li><span class="questionsArray">Weight: </span>{array.weight}</li>
+                <li><span class="questionsArray">Belly: </span>{array.belly}</li>
+                <li><span class="questionsArray">Preferred Fit: </span>{array.fit}</li>
+                <li><span class="questionsArray">Preferred Collar: </span>{array.collar}</li>
+                <li><span class="questionsArray">Preferred Shirt Front: </span>{array.front}</li>
+                <li><span class="questionsArray">Preferred Shirt Cuff: </span>{array.cuff}</li>
+                <li><span class="questionsArray">How your measurements are generated: </span>{array.customersize}</li>
             </div>
+
         });
 
         var userMeasurementsArray = this.props.measurements;
         let userMeasurements = userMeasurementsArray.map(array => {
             return <div>
-                <li>Shoulder: {array.shoulder}</li>
-                <li>Chest: {array.chest}</li>
-                <li>Waist: {array.waist}</li>
-                <li>Hips: {array.hips}</li>
-                <li>Shirt Length: {array.shirtlength}</li>
-                <li>Sleeve Length: {array.sleevelength}</li>
-                <li>Elbow: {array.elbow}</li>
-                <li>Left Cuff Width: {array.leftcuff}</li>
-                <li>Right Cuff Width: {array.rightcuff}</li>
-                <li>Cuff Length: {array.cufflength}</li>
-                <li>Collar Width: {array.collarwidth}</li>
+                <li><span class="measurementsArray">Shoulder: </span>{array.shoulder}</li>
+                <li><span class="measurementsArray">Chest: </span>{array.chest}</li>
+                <li><span class="measurementsArray">Waist: </span>{array.waist}</li>
+                <li><span class="measurementsArray">Hips: </span>{array.hips}</li>
+                <li><span class="measurementsArray">Shirt Length: </span>{array.shirtlength}</li>
+                <li><span class="measurementsArray">Sleeve Length: </span>{array.sleevelength}</li>
+                <li><span class="measurementsArray">Elbow: </span>{array.elbow}</li>
+                <li><span class="measurementsArray">Left Cuff Width: </span>{array.leftcuff}</li>
+                <li><span class="measurementsArray">Right Cuff Width: </span>{array.rightcuff}</li>
+                <li><span class="measurementsArray">Cuff Length: </span>{array.cufflength}</li>
+                <li><span class="measurementsArray">Collar Width: </span>{array.collarwidth}</li>
             </div>
         });
 
         var picturesArray = this.props.pictures;
         let userPictures = picturesArray.map(array => {
             var picturesUrl = "/uploads/"
-            return <div>
-                    <img src={picturesUrl+array.filename}/>
-            </div>
+            return <img src={picturesUrl+array.filename} class="renderedfitpicture col-3 img-fluid"/>
+
         });
 // {picturesUrl} alt="fit pictures" className=""/>
 
     return (
 
-        <layout>
-
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-
-              <a class="navbar-brand" href="#">
-                <img src="/images/" width="30" height="30" class="d-inline-block align-top"/>
-                Collaro Classic Menswear
+        <Layout>
+            <nav class="defaultnavbar navbar navbar-expand-lg navbar-light fixed-top">
+            <img src="/images/logo.png" width="117" height="30" class="navbarlogo"/>
+                <a class="navbar-brand nav-link" href="http://www.collaro.co/shop/">Browse Fabrics</a>
+                <a class="navbar-brand nav-link" href="/aboutus/">About us</a>
+                <a class="navbar-brand nav-link" href={editUserProfile}>Edit Profile</a>
+                <a class="navbar-brand nav-link" href="/">
+                    <form className="user-form form-inline" method="POST" action="/users/logout">
+                        <input type="submit" value="Logout"/>
+                    </form>
                 </a>
-
             </nav>
 
-
-            <button name="Edit Profile"><a href={editUserProfile}>Edit Profile</a></button>
-            <form className="user-form" method="POST" action="/users/logout">
-                <input type="submit" value="Logout"/>
-            </form>
-
-
-            <div>
-                <h3>User Profile</h3>
+                <div>
+                    <h2>User Profile</h2>
+                    <hr></hr>
                 </div>
 
-            <div>
-                <h4>Your Preferences</h4>
-                    <ul>{userQuestions}</ul>
-                </div>
+            <div class='row'>
+                <div class='col-6'>
+                    <h3>Your Preferences</h3>
+                        <ul>{userQuestions}</ul>
+                    </div>
 
-            <div>
-                <h4>Current Measurements (in inches)</h4>
-                    <ul>{userMeasurements}</ul>
-                    <p>If you would like to be physically measured, all your measurements will be indicated as 0 for now.</p>
+                <div class='col-6'>
+                    <h3>Current Measurements (in inches)</h3>
+                        <ul>{userMeasurements}</ul>
+                        <p>If you'd like to be measured, all your measurements will be indicated as 0 for now.</p>
+                </div>
             </div>
 
-            <div>
-                <h4>Current Fit Pictures</h4>
-                    <ul>{userPictures}</ul>
+            <div class="fitpictures">
+                <h3>Current Fit Pictures</h3>
+                    <hr></hr>
+                    <div class="userpictures">{userPictures}</div>
             </div>
 
                 <form action={userProfilePath} method="POST" encType="multipart/form-data">
-                    <label for='file'>Select your image:</label>
-                      <input type="file" name="image" accept='image/*' multiple/>
-                      <input className="button" type="submit" value="Upload Image" />
-                    <span className="hint"> Upload up to 4 images</span>
+                    <label className="label" for='file'>Upload up to 6 fit pictures, and we'll get back to you on how your fit can be improved.</label>
+                    <br></br>
+                      <input className="addfilesbutton" type="file" name="image" accept='image/*' multiple/>
+                      <br></br>
+                      <input className="uploadbutton" type="submit" value="Upload" />
                 </form>
 
-        </layout>
+
+        </Layout>
     )};
 }
 
@@ -110,24 +111,3 @@ module.exports = userHome;
             // <li key={array.id}>{array.filename}</li>
             // <img src={avatarUrl} alt="profile photo" className="card-img-top" />
 
-
- // <a class="navbar-brand" href="#">Navbar</a>
-              // <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-              //   <span class="navbar-toggler-icon"></span>
-              // </button>
-              // <div class="collapse navbar-collapse" id="navbarNav">
-              //   <ul class="navbar-nav">
-              //     <li class="nav-item active">
-              //       <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-              //     </li>
-              //     <li class="nav-item">
-              //       <a class="nav-link" href="#">Features</a>
-              //     </li>
-              //     <li class="nav-item">
-              //       <a class="nav-link" href="#">Pricing</a>
-              //     </li>
-              //     <li class="nav-item">
-              //       <a class="nav-link disabled" href="#">Disabled</a>
-              //     </li>
-              //   </ul>
-              // </div>
