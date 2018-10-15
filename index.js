@@ -15,8 +15,6 @@ const multer = require('multer');
 const app = express();
 
 // Set up middleware
-var upload = multer({storage: Storage}).array("imgUploader", 6);
-
 app.use(methodOverride('_method'));
 app.use(express.static('public'));
 app.use(express.json());
@@ -25,6 +23,24 @@ app.use(cookieParser());
 app.use(express.urlencoded({
   extended: true
 }));
+
+//===================================
+
+const upload = multer({ dest: 'public/uploads/' });
+
+//UNDERSTAND HOW THIS WORKS
+// var storage = multer.diskStorage({
+ //    // __basedir
+ //     destination: function(req, file, callback) {
+ //                    callback(null, "/public/uploads");
+ //                    },
+ //     filename: function(req, file, callback) {
+                    // callback(null, file.originalname + "_" + Date.now() );
+ //                    }
+ // });
+// var upload = multer({storage: storage});
+
+//===================================
 
 
 // Set react-views to be the default view engine
@@ -52,7 +68,6 @@ app.get('/', (request, response) => {
         response.render('root');
     }
 });
-
 
 
 /**

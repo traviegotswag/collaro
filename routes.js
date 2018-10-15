@@ -17,7 +17,7 @@ app.get('/users/questionnaire/', users.questionnaireForm);
 app.get('/users/:username/', users.userhome);
 app.get('/users/logout/', users.logout);
 app.get('/users/:username/edit/', users.editProfile);
-// app.get('/users/:username/uploadfitpictures/', users.uploadFitPictures);
+// app.get('*', response.send("Page not found, go somewhere else yo!"))
 
 
 //-------------------------------------------- CRUD users - POST
@@ -26,7 +26,10 @@ app.post('/users/new', users.create);
 app.post('/users/login', users.login);
 app.post('/users/logout', users.logout);
 app.post('/users/questionnaire', users.questionnaire);
-app.post('/users/:username/uploadFitPictures', users.uploadFitPictures);
+// app.post('/users/:username/upload', users.uploadFitPictures);
+
+app.post('/users/:username/upload', upload.array('image', 4), users.uploadFitPictures)
+// "HOW TO ALLOW FOR TEXT?" --> req.body will contain the text fields, if there were any
 
 //-------------------------------------------- CRUD users - PUT
 

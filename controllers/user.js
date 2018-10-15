@@ -95,7 +95,7 @@ module.exports = (db, upload) => {
         var userId = request.cookies['userid'];
         var username = request.cookies['username'];
 
-        db.user.userhome(request.body, userId, (error1, error2, error3, error4, measurementsQueryResult, questionsQueryResult, smartSizeQueryResult, insertSizeQueryResult) => {
+        db.user.userhome(request.body, userId, (error1, error2, error3, error4, error5, measurementsQueryResult, questionsQueryResult, smartSizeQueryResult, insertSizeQueryResult, picturesQueryResult) => {
             if (error1) {
                 console.error('error1: ', error1);
                 response.sendStatus(500);
@@ -108,13 +108,17 @@ module.exports = (db, upload) => {
             } else if (error4) {
                 console.error('error4: ', error4);
                 response.sendStatus(500);
-            } else if (questionsQueryResult.rowCount >= 1) {
+            } else if (error5) {
+                console.error('error5: ', error5);
+                response.sendStatus(500);
+            } else {
                 var userProfile = questionsQueryResult.rows;
                 var userMeasurements = smartSizeQueryResult.rows;
-
+                var userPictures = picturesQueryResult.rows;
+                // console.log(userPictures);
                 // console.log("userProfile: ", userProfile);
                 // console.log("userMeasurements: ", userMeasurements);
-                response.render('user/home', { questions: userProfile, measurements: userMeasurements, username: username});
+                response.render('user/home', { questions: userProfile, measurements: userMeasurements, pictures: userPictures, username: username} );
             };
         });
     };
@@ -170,34 +174,25 @@ module.exports = (db, upload) => {
           });
         }
 
-
 // ----------------------------------------------------------------
 
-        // app.post('/photos/upload', upload.array('photos', 6), function (req, res, next) {
-        //   // req.files is array of `photos` files
-        //   // req.body will contain the text fields, if there were any
-        // })
-
-
-    // WHAT IS THIS NEXT?
     const uploadFitPictures = (request,response) => {
         var userId = request.cookies['userid'];
         var userName = request.cookies['username'];
+        // console.log(request.files);
 
-        db.user.uploadFitPictures(request.files, userId, userName, (error, queryResult) => {
-            if (error) {
-                console.error('error uploading pictures: ', error);
-                response.sendStatus(500);
-            } else if (queryResult.rowCount >= 1) {
-                console.log("RESULT HEY", queryResult);
-                response.redirect('/users/' + userName);
-            }
-        });
+        for (var i = 0; i < request.files.length; i++) {
+            db.user.uploadFitPictures(request.files[i].filename, userId, userName, (error, queryResult) => {
+                if (error) {
+                    console.error('error inserting filename into database: ', error);
+                    response.sendStatus(500);
+                }
+            });
+        }
+        response.redirect('/users/' + userName);
     }
 
-// upload.array('photos', 12)
-
-
+// ----------------------------------------------------------------
 
   /**
    * ===========================================

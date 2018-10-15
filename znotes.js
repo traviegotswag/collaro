@@ -132,3 +132,50 @@
 
 // //ROUTES REQUIRE CONTROLLER
 //   const users = require('./controllers/user')(db, upload);
+
+//USING OF FOR IN LOOP
+ // for in IS ONLY FOR OBJECT
+
+
+
+// ALTERNATIVE WAY OF WRITING THE CODE
+//  var express = require('express')
+//   , router = express.Router()
+//   , multer = require('multer')
+
+// var uploading = multer({
+//   dest: __dirname + '../public/uploads/',
+//   limits: {fileSize: 1000000, files:4},
+// })
+
+// router.post('/upload', uploading, function(req, res) {
+
+// })
+
+// module.exports = router
+
+//         app.post('/photos/upload', upload.array('photos', 6), function (req, res, next) {
+//           // req.files is array of `photos` files
+//           // req.body will contain the text fields, if there were any
+//         })
+
+
+//     // WHAT IS THIS NEXT?
+//     const uploadFitPictures = (request,response) => {
+//         var userId = request.cookies['userid'];
+//         var userName = request.cookies['username'];
+//         var upload = multer({storage: storage}).any('uploadedImages')
+
+//         db.user.uploadFitPictures(request.files, userId, userName, (error, queryResult) => {
+//             if (error) {
+//                 console.error('error uploading pictures: ', error);
+//                 response.sendStatus(500);
+//             } else if (queryResult.rowCount >= 1) {
+//                 console.log("RESULT HEY", queryResult);
+//                 response.redirect('/users/' + userName);
+//             }
+//         });
+//     }
+
+// // upload.array('photos', 12)
+
