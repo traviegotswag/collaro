@@ -20,14 +20,14 @@ class Home extends React.Component {
               </div>
 
               <div class='col-12 col-md-6'>
-                <img class='img-fluid square' src="images/3.jpg"/>
+                <img class='img-fluid square' src="/images/3.jpg"/>
               </div>
             </div>
 
 
             <div class='row no-gutters'>
               <div class='order-last col-12 order-md-first col-md-6'>
-                <img class='img-fluid' src="images/root.jpg"/>
+                <img class='img-fluid' src="/images/root.jpg"/>
               </div>
 
               <div class='order-first col-12 order-md-last col-md-6 text-container'>
