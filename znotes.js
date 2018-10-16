@@ -3,17 +3,16 @@
 
 //     const queryString = `SELECT * FROM pokemon WHERE id = ${request.params.id}`;
 
-//     const queryString2 = `
-//         SELECT pokemon.id AS pokemonid, pokemon.name AS pokemonname, users_pokemon.user_id AS trainerid, users.name AS trainername
+    const queryString2 = `
+        SELECT pokemon.id AS pokemonid, pokemon.name AS pokemonname, users_pokemon.user_id AS trainerid, users.name AS trainername
 
-//         FROM users
-//         INNER JOIN users_pokemon
-//         ON (users.id = users_pokemon.user_id)
-//         INNER JOIN pokemon
-//         ON (users_pokemon.pokemon_id = pokemon.id)
+        FROM users
+        INNER JOIN users_pokemon
+        ON (users.id = users_pokemon.user_id)
+        INNER JOIN pokemon
+        ON (users_pokemon.pokemon_id = pokemon.id)
 
-//         WHERE users_pokemon.pokemon_id = ${request.params.id}`;
-
+        WHERE users_pokemon.pokemon_id = ${request.params.id}`;
 
 //     pool.query(queryString, (err, result) => {
 
@@ -179,3 +178,52 @@
 
 // // upload.array('photos', 12)
 
+
+<Approach and Process>
+- What in my process and approach to this project would I do differently next time?
+    1. Didnt do pseudocode this time round, wasnt sure it would help, to reassess
+    2. Perhaps talk in greater detail about project scope and get advice on what I should avoid - instead of trying to bulldoze my way through later
+
+-What in my process and approach to this project went well that I would repeat next time?
+    1. Building project in phases, a habit that Ive acquired since proj 1
+    2. Getting different opinions from different classmates, to get fresh perspectives on how to solve issues/get new ideas
+
+
+<Code and Code Design>
+What in my code and program design in the project would I do differently next time?
+    1. Tried to do MVC, struggled a bit
+    2. Have a feeling that the way im doing now is very messy, would like to get some advice on refactoring
+
+What in my code and program design in the project went well? Is there anything I would do the same next time?
+    1. MVC?
+
+What habits did I have during this unit that I can improve on?
+    1. Left styling to the end, not sure if this is best practice
+    2. Learning how to troubleshoot issues on my own and not be dependent on friends
+
+How is the overall level of the course during this unit? (instruction, course materials, etc.)
+    1. Difficult, but felt better compared to unit 1 as Ive acclimatized a bit more
+    2. MVC was to be a big component of this project, but believe the lesson can be better taught
+        - other than myself a few people i spoke to all had difficulties understanding
+        - jump from non-MVC to MVC is quite big
+
+
+GOING BACK TO OLD COMMITTED VERSION, MAKE CHANGES, RESOLVING CONFLICTS WITH THE LATEST VERSION OF MASTER HEAD, THEN UPLOAD LATER
+
+- git checkout to the previous working commit "8eb4a", head is latest commit so when you do this, you will get a notification telling you that you have a detached head
+- git checkout -b Development  - this goes to the new branch  which you want to create called Development, checkout means going to somewhere
+- git push origin Development - when its there
+- git checkout master - this goes to original branch and you are asked to resolve conflict
+- git status: check which branch you on, may say something like "On branch master"
+- Your branch is behind 'origin/master' by 3 commits, and can be fast-forwarded.
+- git pull: to update local branch
+
+
+Questions:
+
+- Understanding branches
+- Reiterating MVC, with 1 query, then with nested queries
+- Check why this statement works:
+- var queryString3 = 'INSERT INTO measurements (shoulder, chest, waist, hips, shirtlength, sleevelength, elbow, leftcuff, rightcuff, cufflength, collar, user_id) SELECT $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12 WHERE NOT EXISTS (SELECT * FROM measurements where user_id = $12)';
+- How will you display the error message if users upload more than the limit?
+- Why is there a need to do an if err in models?
