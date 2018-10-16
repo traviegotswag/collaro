@@ -42,4 +42,3 @@ class NewUser extends React.Component {
 }
 
 module.exports = NewUser;
-// <img src='/images/login.jpg' responsive />

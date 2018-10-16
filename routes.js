@@ -34,8 +34,3 @@ app.put('/users/:username', users.updateProfile);
 
 };
 
-// <select className="shirt-front" name="front">
-                        //   <option value="Clean" selected>Clean</option>
-                        //   <option value="Placket">Placket</option>
-                        //   <option value="Concealed" >Concealed</option>
-                        // </select>
