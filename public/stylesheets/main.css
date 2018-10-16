@@ -222,13 +222,13 @@ h1 {
 
 /**/
 
-.col-6 {
-	height: 100vh;
-	margin: auto;
-	padding: auto;
-	position: absolute;
-	top: 25%;
-	left: 20%;
+.radio {
+	color: rgb(154, 205, 50, 0.5);
+}
+
+.redirect {
+	font-size: 2.5rem;
+	color: rgb(105,105,105,0.5);
 }
 
 /**/

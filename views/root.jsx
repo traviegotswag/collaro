@@ -24,7 +24,6 @@ class Home extends React.Component {
               </div>
             </div>
 
-
             <div class='row no-gutters'>
               <div class='order-last col-12 order-md-first col-md-6'>
                 <img class='img-fluid' src="/images/root.jpg"/>
@@ -49,5 +48,4 @@ class Home extends React.Component {
 }
 
 module.exports = Home;
-
 
